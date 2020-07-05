@@ -1,10 +1,10 @@
 public final class Action
 {
-    public ActionKind kind;
-    public Entity entity;
-    public WorldModel world;
-    public ImageStore imageStore;
-    public int repeatCount;
+    private final ActionKind kind;
+    private final Entity entity;
+    private final WorldModel world;
+    private final ImageStore imageStore;
+    private final int repeatCount;
 
     public Action(
             ActionKind kind,
@@ -38,7 +38,7 @@ public final class Action
 
         if (repeatCount != 1) {
             scheduler.scheduleEvent(entity,
-                    Functions.createAnimationAction(entity,
+                    entity.createAnimationAction(
                             Math.max(repeatCount - 1,
                                     0)),
                     entity.getAnimationPeriod());
@@ -49,7 +49,7 @@ public final class Action
     public void executeActivityAction(
             EventScheduler scheduler)
     {
-        switch (entity.kind) {
+        switch (entity.getKind()) {
             case MINER_FULL:
                 entity.executeMinerFullActivity(world,
                         imageStore, scheduler);
@@ -83,7 +83,7 @@ public final class Action
             default:
                 throw new UnsupportedOperationException(String.format(
                         "executeActivityAction not supported for %s",
-                        entity.kind));
+                        entity.getKind()));
         }
     }
 
