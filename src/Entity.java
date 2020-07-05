@@ -35,10 +35,21 @@ public final class Entity
         this.animationPeriod = animationPeriod;
     }
 
+    public static PImage getCurrentImage(Object entity) {
+        if (entity instanceof Background) {
+            return ((Background)entity).images.get(
+                    ((Background)entity).imageIndex);
+        }
+        else if (entity instanceof Entity) {
+            return ((Entity)entity).images.get(((Entity)entity).imageIndex);
+        }
+        else {
+            throw new UnsupportedOperationException(
+                    String.format("getCurrentImage not supported for %s",
+                            entity));
+        }
+    }
 
-
-
-    // Put Get Current Image First
     public int getAnimationPeriod() {
         switch (kind) {
             case MINER_FULL:
@@ -51,6 +62,9 @@ public final class Entity
                         String.format("getAnimationPeriod not supported for %s",
                                 kind));
         }
+    }
+    public  void nextImage() {
+        imageIndex = (imageIndex + 1) % images.size();
     }
 
 
