@@ -80,135 +80,6 @@ public final class Functions
     public static final int VEIN_ROW = 3;
     public static final int VEIN_ACTION_PERIOD = 4;
 
-    public static void scheduleActions(
-            Entity entity,
-            EventScheduler scheduler,
-            WorldModel world,
-            ImageStore imageStore)
-    {
-        switch (entity.kind) {
-            case MINER_FULL:
-                scheduleEvent(scheduler, entity,
-                              createActivityAction(entity, world, imageStore),
-                              entity.actionPeriod);
-                scheduleEvent(scheduler, entity,
-                              createAnimationAction(entity, 0),
-                              entity.getAnimationPeriod());
-                break;
-
-            case MINER_NOT_FULL:
-                scheduleEvent(scheduler, entity,
-                              createActivityAction(entity, world, imageStore),
-                              entity.actionPeriod);
-                scheduleEvent(scheduler, entity,
-                              createAnimationAction(entity, 0),
-                              entity.getAnimationPeriod());
-                break;
-
-            case ORE:
-                scheduleEvent(scheduler, entity,
-                              createActivityAction(entity, world, imageStore),
-                              entity.actionPeriod);
-                break;
-
-            case ORE_BLOB:
-                scheduleEvent(scheduler, entity,
-                              createActivityAction(entity, world, imageStore),
-                              entity.actionPeriod);
-                scheduleEvent(scheduler, entity,
-                              createAnimationAction(entity, 0),
-                              entity.getAnimationPeriod());
-                break;
-
-            case QUAKE:
-                scheduleEvent(scheduler, entity,
-                              createActivityAction(entity, world, imageStore),
-                              entity.actionPeriod);
-                scheduleEvent(scheduler, entity, createAnimationAction(entity,
-                                                                       QUAKE_ANIMATION_REPEAT_COUNT),
-                              entity.getAnimationPeriod());
-                break;
-
-            case VEIN:
-                scheduleEvent(scheduler, entity,
-                              createActivityAction(entity, world, imageStore),
-                              entity.actionPeriod);
-                break;
-
-            default:
-        }
-    }
-
-    public static boolean transformNotFull(
-            Entity entity,
-            WorldModel world,
-            EventScheduler scheduler,
-            ImageStore imageStore)
-    {
-        if (entity.resourceCount >= entity.resourceLimit) {
-            Entity miner = createMinerFull(entity.id, entity.resourceLimit,
-                                           entity.position, entity.actionPeriod,
-                                           entity.animationPeriod,
-                                           entity.images);
-
-            removeEntity(world, entity);
-            unscheduleAllEvents(scheduler, entity);
-
-            addEntity(world, miner);
-            scheduleActions(miner, scheduler, world, imageStore);
-
-            return true;
-        }
-
-        return false;
-    }
-
-    public static void transformFull(
-            Entity entity,
-            WorldModel world,
-            EventScheduler scheduler,
-            ImageStore imageStore)
-    {
-        Entity miner = createMinerNotFull(entity.id, entity.resourceLimit,
-                                          entity.position, entity.actionPeriod,
-                                          entity.animationPeriod,
-                                          entity.images);
-
-        removeEntity(world, entity);
-        unscheduleAllEvents(scheduler, entity);
-
-        addEntity(world, miner);
-        scheduleActions(miner, scheduler, world, imageStore);
-    }
-
-    public static boolean moveToNotFull(
-            Entity miner,
-            WorldModel world,
-            Entity target,
-            EventScheduler scheduler)
-    {
-        if (adjacent(miner.position, target.position)) {
-            miner.resourceCount += 1;
-            removeEntity(world, target);
-            unscheduleAllEvents(scheduler, target);
-
-            return true;
-        }
-        else {
-            Point nextPos = nextPositionMiner(miner, world, target.position);
-
-            if (!miner.position.equals(nextPos)) {
-                Optional<Entity> occupant = getOccupant(world, nextPos);
-                if (occupant.isPresent()) {
-                    unscheduleAllEvents(scheduler, occupant.get());
-                }
-
-                moveEntity(world, miner, nextPos);
-            }
-            return false;
-        }
-    }
-
     public static boolean moveToFull(
             Entity miner,
             WorldModel world,
@@ -500,7 +371,7 @@ public final class Functions
         return false;
     }
 
-    public static boolean parseBackground(
+    public static boolean parseBackground( // later
             String[] properties, WorldModel world, ImageStore imageStore)
     {
         if (properties.length == BGND_NUM_PROPERTIES) {
@@ -514,7 +385,7 @@ public final class Functions
         return properties.length == BGND_NUM_PROPERTIES;
     }
 
-    public static boolean parseMiner(
+    public static boolean parseMiner( // later
             String[] properties, WorldModel world, ImageStore imageStore)
     {
         if (properties.length == MINER_NUM_PROPERTIES) {
@@ -534,7 +405,7 @@ public final class Functions
         return properties.length == MINER_NUM_PROPERTIES;
     }
 
-    public static boolean parseObstacle(
+    public static boolean parseObstacle( // later
             String[] properties, WorldModel world, ImageStore imageStore)
     {
         if (properties.length == OBSTACLE_NUM_PROPERTIES) {
@@ -549,7 +420,7 @@ public final class Functions
         return properties.length == OBSTACLE_NUM_PROPERTIES;
     }
 
-    public static boolean parseOre(
+    public static boolean parseOre( // later
             String[] properties, WorldModel world, ImageStore imageStore)
     {
         if (properties.length == ORE_NUM_PROPERTIES) {
@@ -564,7 +435,7 @@ public final class Functions
         return properties.length == ORE_NUM_PROPERTIES;
     }
 
-    public static boolean parseSmith(
+    public static boolean parseSmith( // later
             String[] properties, WorldModel world, ImageStore imageStore)
     {
         if (properties.length == SMITH_NUM_PROPERTIES) {
@@ -579,7 +450,7 @@ public final class Functions
         return properties.length == SMITH_NUM_PROPERTIES;
     }
 
-    public static boolean parseVein(
+    public static boolean parseVein( // later
             String[] properties, WorldModel world, ImageStore imageStore)
     {
         if (properties.length == VEIN_NUM_PROPERTIES) {
