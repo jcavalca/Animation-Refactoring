@@ -96,19 +96,19 @@ public final class Functions
         }
     }
 
-    public static int getAnimationPeriod(Entity entity) {
-        switch (entity.kind) {
-            case MINER_FULL:
-            case MINER_NOT_FULL:
-            case ORE_BLOB:
-            case QUAKE:
-                return entity.animationPeriod;
-            default:
-                throw new UnsupportedOperationException(
-                        String.format("getAnimationPeriod not supported for %s",
-                                      entity.kind));
-        }
-    }
+//    public static int getAnimationPeriod(Entity entity) {
+//        switch (entity.kind) {
+//            case MINER_FULL:
+//            case MINER_NOT_FULL:
+//            case ORE_BLOB:
+//            case QUAKE:
+//                return entity.animationPeriod;
+//            default:
+//                throw new UnsupportedOperationException(
+//                        String.format("getAnimationPeriod not supported for %s",
+//                                      entity.kind));
+//        }
+//    }
 
     public static void nextImage(Entity entity) {
         entity.imageIndex = (entity.imageIndex + 1) % entity.images.size();
@@ -136,7 +136,7 @@ public final class Functions
                           createAnimationAction(action.entity,
                                                 Math.max(action.repeatCount - 1,
                                                          0)),
-                          getAnimationPeriod(action.entity));
+                          action.entity.getAnimationPeriod());
         }
     }
 
@@ -317,7 +317,7 @@ public final class Functions
                               entity.actionPeriod);
                 scheduleEvent(scheduler, entity,
                               createAnimationAction(entity, 0),
-                              getAnimationPeriod(entity));
+                              entity.getAnimationPeriod());
                 break;
 
             case MINER_NOT_FULL:
@@ -326,7 +326,7 @@ public final class Functions
                               entity.actionPeriod);
                 scheduleEvent(scheduler, entity,
                               createAnimationAction(entity, 0),
-                              getAnimationPeriod(entity));
+                              entity.getAnimationPeriod());
                 break;
 
             case ORE:
@@ -341,7 +341,7 @@ public final class Functions
                               entity.actionPeriod);
                 scheduleEvent(scheduler, entity,
                               createAnimationAction(entity, 0),
-                              getAnimationPeriod(entity));
+                              entity.getAnimationPeriod());
                 break;
 
             case QUAKE:
@@ -350,7 +350,7 @@ public final class Functions
                               entity.actionPeriod);
                 scheduleEvent(scheduler, entity, createAnimationAction(entity,
                                                                        QUAKE_ANIMATION_REPEAT_COUNT),
-                              getAnimationPeriod(entity));
+                              entity.getAnimationPeriod());
                 break;
 
             case VEIN:
@@ -600,7 +600,7 @@ public final class Functions
         return imageStore.images.getOrDefault(key, imageStore.defaultImages);
     }
 
-    public static void loadImages(
+    public static void loadImages( // leave for later
             Scanner in, ImageStore imageStore, PApplet screen)
     {
         int lineNumber = 0;
@@ -617,7 +617,7 @@ public final class Functions
         }
     }
 
-    public static void processImageLine(
+    public static void processImageLine( // leave for later
             Map<String, List<PImage>> images, String line, PApplet screen)
     {
         String[] attrs = line.split("\\s");
@@ -638,7 +638,7 @@ public final class Functions
         }
     }
 
-    public static List<PImage> getImages(
+    public static List<PImage> getImages( // leave for later
             Map<String, List<PImage>> images, String key)
     {
         List<PImage> imgs = images.get(key);
@@ -653,7 +653,7 @@ public final class Functions
       Called with color for which alpha should be set and alpha value.
       setAlpha(img, color(255, 255, 255), 0));
     */
-    public static void setAlpha(PImage img, int maskColor, int alpha) {
+    public static void setAlpha(PImage img, int maskColor, int alpha) { // leave for later
         int alphaValue = alpha << 24;
         int nonAlpha = maskColor & COLOR_MASK;
         img.format = PApplet.ARGB;
@@ -676,7 +676,7 @@ public final class Functions
                 && p.x >= viewport.col && p.x < viewport.col + viewport.numCols;
     }
 
-    public static void load(
+    public static void load( // leave for later
             Scanner in, WorldModel world, ImageStore imageStore)
     {
         int lineNumber = 0;
@@ -700,7 +700,7 @@ public final class Functions
         }
     }
 
-    public static boolean processLine(
+    public static boolean processLine( // leave for later
             String line, WorldModel world, ImageStore imageStore)
     {
         String[] properties = line.split("\\s");
