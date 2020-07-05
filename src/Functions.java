@@ -203,7 +203,7 @@ public final class Functions
             Point pt = new Point(Integer.parseInt(properties[BGND_COL]),
                                  Integer.parseInt(properties[BGND_ROW]));
             String id = properties[BGND_ID];
-            setBackground(world, pt,
+            world.setBackground(pt,
                           new Background(id, imageStore.getImageList(id)));
         }
 
@@ -314,100 +314,8 @@ public final class Functions
         }
     }
 
-    /*
-       Assumes that there is no entity currently occupying the
-       intended destination cell.
-    */
-    public static void addEntity(WorldModel world, Entity entity) {
-        if (world.withinBounds(entity.position)) {
-            setOccupancyCell(world, entity.position, entity);
-            world.entities.add(entity);
-        }
-    }
 
-    public static void moveEntity(WorldModel world, Entity entity, Point pos) {
-        Point oldPos = entity.position;
-        if (world.withinBounds(pos) && !pos.equals(oldPos)) {
-            setOccupancyCell(world, oldPos, null);
-            removeEntityAt(world, pos);
-            setOccupancyCell(world, pos, entity);
-            entity.position = pos;
-        }
-    }
-
-    public static void removeEntity(WorldModel world, Entity entity) {
-        removeEntityAt(world, entity.position);
-    }
-
-    public static void removeEntityAt(WorldModel world, Point pos) {
-        if (world.withinBounds(pos) && getOccupancyCell(world, pos) != null) {
-            Entity entity = getOccupancyCell(world, pos);
-
-            /* This moves the entity just outside of the grid for
-             * debugging purposes. */
-            entity.position = new Point(-1, -1);
-            world.entities.remove(entity);
-            setOccupancyCell(world, pos, null);
-        }
-    }
-
-    public static Optional<PImage> getBackgroundImage(
-            WorldModel world, Point pos)
-    {
-        if (world.withinBounds(pos)) {
-            return Optional.of(Entity.getCurrentImage(getBackgroundCell(world, pos)));
-        }
-        else {
-            return Optional.empty();
-        }
-    }
-
-    public static void setBackground(
-            WorldModel world, Point pos, Background background)
-    {
-        if (world.withinBounds(pos)) {
-            setBackgroundCell(world, pos, background);
-        }
-    }
-
-    public static Optional<Entity> getOccupant(WorldModel world, Point pos) {
-        if (world.isOccupied(pos)) {
-            return Optional.of(getOccupancyCell(world, pos));
-        }
-        else {
-            return Optional.empty();
-        }
-    }
-
-    public static Entity getOccupancyCell(WorldModel world, Point pos) {
-        return world.occupancy[pos.y][pos.x];
-    }
-
-    public static void setOccupancyCell(
-            WorldModel world, Point pos, Entity entity)
-    {
-        world.occupancy[pos.y][pos.x] = entity;
-    }
-
-    public static Background getBackgroundCell(WorldModel world, Point pos) {
-        return world.background[pos.y][pos.x];
-    }
-
-    public static void setBackgroundCell(
-            WorldModel world, Point pos, Background background)
-    {
-        world.background[pos.y][pos.x] = background;
-    }
-
-    public static Point viewportToWorld(Viewport viewport, int col, int row) {
-        return new Point(col + viewport.col, row + viewport.row);
-    }
-
-    public static Point worldToViewport(Viewport viewport, int col, int row) {
-        return new Point(col - viewport.col, row - viewport.row);
-    }
-
-    public static int clamp(int value, int low, int high) {
+    public static int clamp(int value, int low, int high) { // where should this go??
         return Math.min(high, Math.max(value, low));
     }
 
@@ -423,9 +331,9 @@ public final class Functions
     public static void drawBackground(WorldView view) {
         for (int row = 0; row < view.viewport.numRows; row++) {
             for (int col = 0; col < view.viewport.numCols; col++) {
-                Point worldPoint = viewportToWorld(view.viewport, col, row);
+                Point worldPoint = view.viewport.viewportToWorld(col, row);
                 Optional<PImage> image =
-                        getBackgroundImage(view.world, worldPoint);
+                view.world.getBackgroundImage(worldPoint);
                 if (image.isPresent()) {
                     view.screen.image(image.get(), col * view.tileWidth,
                                       row * view.tileHeight);
@@ -439,7 +347,7 @@ public final class Functions
             Point pos = entity.position;
 
             if (view.viewport.contains(pos)) {
-                Point viewPoint = worldToViewport(view.viewport, pos.x, pos.y);
+                Point viewPoint = view.viewport.worldToViewport(pos.x, pos.y);
                 view.screen.image(Entity.getCurrentImage(entity),
                                   viewPoint.x * view.tileWidth,
                                   viewPoint.y * view.tileHeight);

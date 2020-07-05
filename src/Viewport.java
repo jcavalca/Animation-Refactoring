@@ -19,4 +19,12 @@ public final class Viewport
         return p.y >= this.row && p.y < this.row + this.numRows
                 && p.x >= this.col && p.x < this.col + this.numCols;
     }
+
+    public Point viewportToWorld(int col, int row) {
+        return new Point(col + this.col, row + this.row);
+    }
+
+    public Point worldToViewport(int col, int row) {
+        return new Point(col - this.col, row - this.row);
+    }
 }
