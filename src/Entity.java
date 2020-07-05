@@ -76,7 +76,7 @@ public final class Entity
         Optional<Entity> fullTarget =
                 Functions.findNearest(world, this.position, EntityKind.BLACKSMITH);
 
-        if (fullTarget.isPresent() && Functions.moveToFull(this, world,
+        if (fullTarget.isPresent() && this.moveToFull(world,
                 fullTarget.get(), scheduler))
         {
             transformFull(world, scheduler, imageStore);
@@ -141,7 +141,7 @@ public final class Entity
         if (blobTarget.isPresent()) {
             Point tgtPos = blobTarget.get().position;
 
-            if (Functions.moveToOreBlob(this, world, blobTarget.get(), scheduler)) {
+            if (this.moveToOreBlob(world, blobTarget.get(), scheduler)) {
                 Entity quake = Functions.createQuake(tgtPos,
                         Functions.getImageList(imageStore, Functions.QUAKE_KEY));
 
@@ -297,7 +297,7 @@ public final class Entity
             return true;
         }
         else {
-            Point nextPos = Functions.nextPositionMiner(this, world, target.position);
+            Point nextPos = this.nextPositionMiner(world, target.position);
 
             if (!this.position.equals(nextPos)) {
                 Optional<Entity> occupant = Functions.getOccupant(world, nextPos);
@@ -310,5 +310,70 @@ public final class Entity
             return false;
         }
     }
+    public  boolean moveToFull(
+            WorldModel world,
+            Entity target,
+            EventScheduler scheduler)
+    {
+        if (Functions.adjacent(this.position, target.position)) {
+            return true;
+        }
+        else {
+            Point nextPos = this.nextPositionMiner(world, target.position);
+
+            if (!this.position.equals(nextPos)) {
+                Optional<Entity> occupant = Functions.getOccupant(world, nextPos);
+                if (occupant.isPresent()) {
+                    Functions.unscheduleAllEvents(scheduler, occupant.get());
+                }
+
+                Functions.moveEntity(world, this, nextPos);
+            }
+            return false;
+        }
+    }
+
+    public boolean moveToOreBlob(
+            WorldModel world,
+            Entity target,
+            EventScheduler scheduler)
+    {
+        if (Functions.adjacent(this.position, target.position)) {
+            Functions.removeEntity(world, target);
+            Functions.unscheduleAllEvents(scheduler, target);
+            return true;
+        }
+        else {
+            Point nextPos = Functions.nextPositionOreBlob(this, world, target.position);
+
+            if (!this.position.equals(nextPos)) {
+                Optional<Entity> occupant = Functions.getOccupant(world, nextPos);
+                if (occupant.isPresent()) {
+                    Functions.unscheduleAllEvents(scheduler, occupant.get());
+                }
+
+                Functions.moveEntity(world, this, nextPos);
+            }
+            return false;
+        }
+    }
+    public Point nextPositionMiner(
+            WorldModel world, Point destPos)
+    {
+        int horiz = Integer.signum(destPos.x - this.position.x);
+        Point newPos = new Point(this.position.x + horiz, this.position.y);
+
+        if (horiz == 0 || Functions.isOccupied(world, newPos)) {
+            int vert = Integer.signum(destPos.y - this.position.y);
+            newPos = new Point(this.position.x, this.position.y + vert);
+
+            if (vert == 0 || Functions.isOccupied(world, newPos)) {
+                newPos = this.position;
+            }
+        }
+
+        return newPos;
+    }
+
 
 }
