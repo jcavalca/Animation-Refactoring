@@ -160,4 +160,36 @@ public final class Entity
                 nextPeriod);
     }
 
+
+    public static void executeQuakeActivity(
+            Entity entity,
+            WorldModel world,
+            ImageStore imageStore,
+            EventScheduler scheduler)
+    {
+        Functions.unscheduleAllEvents(scheduler, entity);
+        Functions.removeEntity(world, entity);
+    }
+
+    public static void executeVeinActivity(
+            Entity entity,
+            WorldModel world,
+            ImageStore imageStore,
+            EventScheduler scheduler)
+    {
+        Optional<Point> openPt = Functions.findOpenAround(world, entity.position);
+
+        if (openPt.isPresent()) {
+            Entity ore = Functions.createOre(Functions.ORE_ID_PREFIX + entity.id, openPt.get(),
+                    Functions.ORE_CORRUPT_MIN + Functions.rand.nextInt(
+                            Functions.ORE_CORRUPT_MAX - Functions.ORE_CORRUPT_MIN),
+                    Functions.getImageList(imageStore, Functions.ORE_KEY));
+            Functions.addEntity(world, ore);
+            Functions.scheduleActions(ore, scheduler, world, imageStore);
+        }
+
+        Functions.scheduleEvent(scheduler, entity,
+                Functions.createActivityAction(entity, world, imageStore),
+                entity.actionPeriod);
+    }
 }

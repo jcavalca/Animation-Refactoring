@@ -80,38 +80,27 @@ public final class Functions
     public static final int VEIN_ROW = 3;
     public static final int VEIN_ACTION_PERIOD = 4;
 
-
-    public static void executeQuakeActivity(
-            Entity entity,
-            WorldModel world,
-            ImageStore imageStore,
-            EventScheduler scheduler)
-    {
-        unscheduleAllEvents(scheduler, entity);
-        removeEntity(world, entity);
-    }
-
-    public static void executeVeinActivity(
-            Entity entity,
-            WorldModel world,
-            ImageStore imageStore,
-            EventScheduler scheduler)
-    {
-        Optional<Point> openPt = findOpenAround(world, entity.position);
-
-        if (openPt.isPresent()) {
-            Entity ore = createOre(ORE_ID_PREFIX + entity.id, openPt.get(),
-                                   ORE_CORRUPT_MIN + rand.nextInt(
-                                           ORE_CORRUPT_MAX - ORE_CORRUPT_MIN),
-                                   getImageList(imageStore, ORE_KEY));
-            addEntity(world, ore);
-            scheduleActions(ore, scheduler, world, imageStore);
-        }
-
-        scheduleEvent(scheduler, entity,
-                      createActivityAction(entity, world, imageStore),
-                      entity.actionPeriod);
-    }
+//    public static void executeVeinActivity(
+//            Entity entity,
+//            WorldModel world,
+//            ImageStore imageStore,
+//            EventScheduler scheduler)
+//    {
+//        Optional<Point> openPt = findOpenAround(world, entity.position);
+//
+//        if (openPt.isPresent()) {
+//            Entity ore = createOre(ORE_ID_PREFIX + entity.id, openPt.get(),
+//                                   ORE_CORRUPT_MIN + rand.nextInt(
+//                                           ORE_CORRUPT_MAX - ORE_CORRUPT_MIN),
+//                                   getImageList(imageStore, ORE_KEY));
+//            addEntity(world, ore);
+//            scheduleActions(ore, scheduler, world, imageStore);
+//        }
+//
+//        scheduleEvent(scheduler, entity,
+//                      createActivityAction(entity, world, imageStore),
+//                      entity.actionPeriod);
+//    }
 
     public static void scheduleActions(
             Entity entity,

@@ -71,12 +71,12 @@ public final class Action
                 break;
 
             case QUAKE:
-                Functions.executeQuakeActivity(entity, world,
+                Entity.executeQuakeActivity(entity, world,
                         imageStore, scheduler);
                 break;
 
             case VEIN:
-                Functions.executeVeinActivity(entity, world,
+                Entity.executeVeinActivity(entity, world,
                         imageStore, scheduler);
                 break;
 
@@ -86,6 +86,5 @@ public final class Action
                         entity.kind));
         }
     }
-
 
 }
