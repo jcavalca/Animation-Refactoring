@@ -1,4 +1,5 @@
 import java.util.List;
+import java.util.Optional;
 
 import processing.core.PImage;
 
@@ -67,6 +68,96 @@ public final class Entity
         imageIndex = (imageIndex + 1) % images.size();
     }
 
+    public static void executeMinerFullActivity(
+            Entity entity,
+            WorldModel world,
+            ImageStore imageStore,
+            EventScheduler scheduler)
+    {
+        Optional<Entity> fullTarget =
+                Functions.findNearest(world, entity.position, EntityKind.BLACKSMITH);
 
+        if (fullTarget.isPresent() && Functions.moveToFull(entity, world,
+                fullTarget.get(), scheduler))
+        {
+            Functions.transformFull(entity, world, scheduler, imageStore);
+        }
+        else {
+            Functions.scheduleEvent(scheduler, entity,
+                    Functions.createActivityAction(entity, world, imageStore),
+                    entity.actionPeriod);
+        }
+    }
+
+
+    public static void executeMinerNotFullActivity(
+            Entity entity,
+            WorldModel world,
+            ImageStore imageStore,
+            EventScheduler scheduler)
+    {
+        Optional<Entity> notFullTarget =
+                Functions.findNearest(world, entity.position, EntityKind.ORE);
+
+        if (!notFullTarget.isPresent() || !Functions.moveToNotFull(entity, world,
+                notFullTarget.get(),
+                scheduler)
+                || !Functions.transformNotFull(entity, world, scheduler, imageStore))
+        {
+            Functions.scheduleEvent(scheduler, entity,
+                    Functions.createActivityAction(entity, world, imageStore),
+                    entity.actionPeriod);
+        }
+    }
+
+    public static void executeOreActivity(
+            Entity entity,
+            WorldModel world,
+            ImageStore imageStore,
+            EventScheduler scheduler)
+    {
+        Point pos = entity.position;
+
+        Functions.removeEntity(world, entity);
+        Functions.unscheduleAllEvents(scheduler, entity);
+
+        Entity blob = Functions.createOreBlob(entity.id + Functions.BLOB_ID_SUFFIX, pos,
+                entity.actionPeriod / Functions.BLOB_PERIOD_SCALE,
+                Functions.BLOB_ANIMATION_MIN + Functions.rand.nextInt(
+                        Functions.BLOB_ANIMATION_MAX
+                                - Functions.BLOB_ANIMATION_MIN),
+                Functions.getImageList(imageStore, Functions.BLOB_KEY));
+
+        Functions.addEntity(world, blob);
+        Functions.scheduleActions(blob, scheduler, world, imageStore);
+    }
+
+    public static void executeOreBlobActivity(
+            Entity entity,
+            WorldModel world,
+            ImageStore imageStore,
+            EventScheduler scheduler)
+    {
+        Optional<Entity> blobTarget =
+                Functions.findNearest(world, entity.position, EntityKind.VEIN);
+        long nextPeriod = entity.actionPeriod;
+
+        if (blobTarget.isPresent()) {
+            Point tgtPos = blobTarget.get().position;
+
+            if (Functions.moveToOreBlob(entity, world, blobTarget.get(), scheduler)) {
+                Entity quake = Functions.createQuake(tgtPos,
+                        Functions.getImageList(imageStore, Functions.QUAKE_KEY));
+
+                Functions.addEntity(world, quake);
+                nextPeriod += entity.actionPeriod;
+                Functions.scheduleActions(quake, scheduler, world, imageStore);
+            }
+        }
+
+        Functions.scheduleEvent(scheduler, entity,
+                Functions.createActivityAction(entity, world, imageStore),
+                nextPeriod);
+    }
 
 }
