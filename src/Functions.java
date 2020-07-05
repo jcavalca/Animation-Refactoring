@@ -80,31 +80,6 @@ public final class Functions
     public static final int VEIN_ROW = 3;
     public static final int VEIN_ACTION_PERIOD = 4;
 
-    public static void removePendingEvent(
-            EventScheduler scheduler, Event event)
-    {
-        List<Event> pending = scheduler.pendingEvents.get(event.entity);
-
-        if (pending != null) {
-            pending.remove(event);
-        }
-    }
-
-    public static void updateOnTime(EventScheduler scheduler, long time) {
-        while (!scheduler.eventQueue.isEmpty()
-                && scheduler.eventQueue.peek().time < time) {
-            Event next = scheduler.eventQueue.poll();
-
-            removePendingEvent(scheduler, next);
-
-            next.action.executeAction(scheduler);
-        }
-    }
-
-    public static List<PImage> getImageList(ImageStore imageStore, String key) {
-        return imageStore.images.getOrDefault(key, imageStore.defaultImages);
-    }
-
     public static void loadImages( // leave for later
             Scanner in, ImageStore imageStore, PApplet screen)
     {
@@ -171,15 +146,7 @@ public final class Functions
         img.updatePixels();
     }
 
-    public static void shift(Viewport viewport, int col, int row) {
-        viewport.col = col;
-        viewport.row = row;
-    }
 
-    public static boolean contains(Viewport viewport, Point p) {
-        return p.y >= viewport.row && p.y < viewport.row + viewport.numRows
-                && p.x >= viewport.col && p.x < viewport.col + viewport.numCols;
-    }
 
     public static void load( // leave for later
             Scanner in, WorldModel world, ImageStore imageStore)
@@ -237,7 +204,7 @@ public final class Functions
                                  Integer.parseInt(properties[BGND_ROW]));
             String id = properties[BGND_ID];
             setBackground(world, pt,
-                          new Background(id, getImageList(imageStore, id)));
+                          new Background(id, imageStore.getImageList(id)));
         }
 
         return properties.length == BGND_NUM_PROPERTIES;
@@ -255,9 +222,9 @@ public final class Functions
                                                pt, Integer.parseInt(
                             properties[MINER_ACTION_PERIOD]), Integer.parseInt(
                             properties[MINER_ANIMATION_PERIOD]),
-                                               getImageList(imageStore,
+                                               imageStore.getImageList(
                                                             MINER_KEY));
-            tryAddEntity(world, entity);
+            world.tryAddEntity(entity);
         }
 
         return properties.length == MINER_NUM_PROPERTIES;
@@ -270,9 +237,9 @@ public final class Functions
             Point pt = new Point(Integer.parseInt(properties[OBSTACLE_COL]),
                                  Integer.parseInt(properties[OBSTACLE_ROW]));
             Entity entity = createObstacle(properties[OBSTACLE_ID], pt,
-                                           getImageList(imageStore,
+                                           imageStore.getImageList(
                                                         OBSTACLE_KEY));
-            tryAddEntity(world, entity);
+            world.tryAddEntity(entity);
         }
 
         return properties.length == OBSTACLE_NUM_PROPERTIES;
@@ -286,8 +253,8 @@ public final class Functions
                                  Integer.parseInt(properties[ORE_ROW]));
             Entity entity = createOre(properties[ORE_ID], pt, Integer.parseInt(
                     properties[ORE_ACTION_PERIOD]),
-                                      getImageList(imageStore, ORE_KEY));
-            tryAddEntity(world, entity);
+                                      imageStore.getImageList(ORE_KEY));
+            world.tryAddEntity(entity);
         }
 
         return properties.length == ORE_NUM_PROPERTIES;
@@ -300,9 +267,9 @@ public final class Functions
             Point pt = new Point(Integer.parseInt(properties[SMITH_COL]),
                                  Integer.parseInt(properties[SMITH_ROW]));
             Entity entity = createBlacksmith(properties[SMITH_ID], pt,
-                                             getImageList(imageStore,
+                                             imageStore.getImageList(
                                                           SMITH_KEY));
-            tryAddEntity(world, entity);
+            world.tryAddEntity(entity);
         }
 
         return properties.length == SMITH_NUM_PROPERTIES;
@@ -317,33 +284,14 @@ public final class Functions
             Entity entity = createVein(properties[VEIN_ID], pt,
                                        Integer.parseInt(
                                                properties[VEIN_ACTION_PERIOD]),
-                                       getImageList(imageStore, VEIN_KEY));
-            tryAddEntity(world, entity);
+                                       imageStore.getImageList(VEIN_KEY));
+            world.tryAddEntity(entity);
         }
 
         return properties.length == VEIN_NUM_PROPERTIES;
     }
 
-    public static void tryAddEntity(WorldModel world, Entity entity) {
-        if (isOccupied(world, entity.position)) {
-            // arguably the wrong type of exception, but we are not
-            // defining our own exceptions yet
-            throw new IllegalArgumentException("position occupied");
-        }
-
-        addEntity(world, entity);
-    }
-
-    public static boolean withinBounds(WorldModel world, Point pos) {
-        return pos.y >= 0 && pos.y < world.numRows && pos.x >= 0
-                && pos.x < world.numCols;
-    }
-
-    public static boolean isOccupied(WorldModel world, Point pos) {
-        return withinBounds(world, pos) && getOccupancyCell(world, pos) != null;
-    }
-
-    public static Optional<Entity> nearestEntity(
+    public static Optional<Entity> nearestEntity( //// Gotta solve
             List<Entity> entities, Point pos)
     {
         if (entities.isEmpty()) {
@@ -351,10 +299,10 @@ public final class Functions
         }
         else {
             Entity nearest = entities.get(0);
-            int nearestDistance = distanceSquared(nearest.position, pos);
+            int nearestDistance = nearest.position.distanceSquared(pos);
 
             for (Entity other : entities) {
-                int otherDistance = distanceSquared(other.position, pos);
+                int otherDistance = other.position.distanceSquared(pos);
 
                 if (otherDistance < nearestDistance) {
                     nearest = other;
@@ -366,32 +314,12 @@ public final class Functions
         }
     }
 
-    public static int distanceSquared(Point p1, Point p2) {
-        int deltaX = p1.x - p2.x;
-        int deltaY = p1.y - p2.y;
-
-        return deltaX * deltaX + deltaY * deltaY;
-    }
-
-    public static Optional<Entity> findNearest(
-            WorldModel world, Point pos, EntityKind kind)
-    {
-        List<Entity> ofType = new LinkedList<>();
-        for (Entity entity : world.entities) {
-            if (entity.kind == kind) {
-                ofType.add(entity);
-            }
-        }
-
-        return nearestEntity(ofType, pos);
-    }
-
     /*
        Assumes that there is no entity currently occupying the
        intended destination cell.
     */
     public static void addEntity(WorldModel world, Entity entity) {
-        if (withinBounds(world, entity.position)) {
+        if (world.withinBounds(entity.position)) {
             setOccupancyCell(world, entity.position, entity);
             world.entities.add(entity);
         }
@@ -399,7 +327,7 @@ public final class Functions
 
     public static void moveEntity(WorldModel world, Entity entity, Point pos) {
         Point oldPos = entity.position;
-        if (withinBounds(world, pos) && !pos.equals(oldPos)) {
+        if (world.withinBounds(pos) && !pos.equals(oldPos)) {
             setOccupancyCell(world, oldPos, null);
             removeEntityAt(world, pos);
             setOccupancyCell(world, pos, entity);
@@ -412,7 +340,7 @@ public final class Functions
     }
 
     public static void removeEntityAt(WorldModel world, Point pos) {
-        if (withinBounds(world, pos) && getOccupancyCell(world, pos) != null) {
+        if (world.withinBounds(pos) && getOccupancyCell(world, pos) != null) {
             Entity entity = getOccupancyCell(world, pos);
 
             /* This moves the entity just outside of the grid for
@@ -426,7 +354,7 @@ public final class Functions
     public static Optional<PImage> getBackgroundImage(
             WorldModel world, Point pos)
     {
-        if (withinBounds(world, pos)) {
+        if (world.withinBounds(pos)) {
             return Optional.of(Entity.getCurrentImage(getBackgroundCell(world, pos)));
         }
         else {
@@ -437,13 +365,13 @@ public final class Functions
     public static void setBackground(
             WorldModel world, Point pos, Background background)
     {
-        if (withinBounds(world, pos)) {
+        if (world.withinBounds(pos)) {
             setBackgroundCell(world, pos, background);
         }
     }
 
     public static Optional<Entity> getOccupant(WorldModel world, Point pos) {
-        if (isOccupied(world, pos)) {
+        if (world.isOccupied(pos)) {
             return Optional.of(getOccupancyCell(world, pos));
         }
         else {
@@ -489,7 +417,7 @@ public final class Functions
         int newRow = clamp(view.viewport.row + rowDelta, 0,
                            view.world.numRows - view.viewport.numRows);
 
-        shift(view.viewport, newCol, newRow);
+        view.viewport.shift(newCol, newRow);
     }
 
     public static void drawBackground(WorldView view) {
@@ -510,7 +438,7 @@ public final class Functions
         for (Entity entity : view.world.entities) {
             Point pos = entity.position;
 
-            if (contains(view.viewport, pos)) {
+            if (view.viewport.contains(pos)) {
                 Point viewPoint = worldToViewport(view.viewport, pos.x, pos.y);
                 view.screen.image(Entity.getCurrentImage(entity),
                                   viewPoint.x * view.tileWidth,
