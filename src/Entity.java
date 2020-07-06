@@ -245,7 +245,7 @@ public final class Entity
         }
     }
 
-    public boolean transformNotFull(
+    private boolean transformNotFull(
             WorldModel world,
             EventScheduler scheduler,
             ImageStore imageStore)
@@ -267,7 +267,7 @@ public final class Entity
 
         return false;
     }
-    public void transformFull(
+    private void transformFull(
             WorldModel world,
             EventScheduler scheduler,
             ImageStore imageStore)
@@ -284,7 +284,7 @@ public final class Entity
         miner.scheduleActions(scheduler, world, imageStore);
     }
 
-    public boolean moveToNotFull(
+    private boolean moveToNotFull(
             WorldModel world,
             Entity target,
             EventScheduler scheduler)
@@ -310,7 +310,7 @@ public final class Entity
             return false;
         }
     }
-    public  boolean moveToFull(
+    private boolean moveToFull(
             WorldModel world,
             Entity target,
             EventScheduler scheduler)
@@ -333,7 +333,7 @@ public final class Entity
         }
     }
 
-    public boolean moveToOreBlob(
+    private boolean moveToOreBlob(
             WorldModel world,
             Entity target,
             EventScheduler scheduler)
@@ -357,7 +357,7 @@ public final class Entity
             return false;
         }
     }
-    public Point nextPositionMiner(
+    private Point nextPositionMiner(
             WorldModel world, Point destPos)
     {
         int horiz = Integer.signum(destPos.getX() - this.position.getX());
@@ -375,7 +375,7 @@ public final class Entity
         return newPos;
     }
 
-    public Point nextPositionOreBlob(
+    private Point nextPositionOreBlob(
              WorldModel world, Point destPos)
     {
         int horiz = Integer.signum(destPos.getX() - this.position.getX());
@@ -405,7 +405,7 @@ public final class Entity
                 repeatCount);
     }
 
-    public Action createActivityAction(
+    private Action createActivityAction(
             WorldModel world, ImageStore imageStore)
     {
         return new Action(ActionKind.ACTIVITY, this, world, imageStore, 0);
@@ -418,7 +418,7 @@ public final class Entity
                 0);
     }
 
-    public static Entity createMinerFull(
+    private static Entity createMinerFull(
             String id,
             int resourceLimit,
             Point position,
@@ -457,7 +457,7 @@ public final class Entity
                 actionPeriod, 0);
     }
 
-    public static Entity createOreBlob(
+    private static Entity createOreBlob(
             String id,
             Point position,
             int actionPeriod,
@@ -468,7 +468,7 @@ public final class Entity
                 actionPeriod, animationPeriod);
     }
 
-    public static Entity createQuake(
+    private static Entity createQuake(
             Point position, List<PImage> images)
     {
         return new Entity(EntityKind.QUAKE, Functions.QUAKE_ID, position, images, 0, 0,

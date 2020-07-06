@@ -100,13 +100,13 @@ public final class VirtualWorld extends PApplet
         }
     }
 
-    public static Background createDefaultBackground(ImageStore imageStore) {
+    private static Background createDefaultBackground(ImageStore imageStore) {
         return new Background(DEFAULT_IMAGE_NAME,
                               imageStore.getImageList(
                                                      DEFAULT_IMAGE_NAME));
     }
 
-    public static PImage createImageColored(int width, int height, int color) {
+    private static PImage createImageColored(int width, int height, int color) {
         PImage img = new PImage(width, height, RGB);
         img.loadPixels();
         for (int i = 0; i < img.pixels.length; i++) {
@@ -128,7 +128,7 @@ public final class VirtualWorld extends PApplet
         }
     }
 
-    public static void loadWorld(
+    private static void loadWorld(
             WorldModel world, String filename, ImageStore imageStore)
     {
         try {
@@ -140,7 +140,7 @@ public final class VirtualWorld extends PApplet
         }
     }
 
-    public static void scheduleActions(
+    private static void scheduleActions(
             WorldModel world, EventScheduler scheduler, ImageStore imageStore)
     {
         for (Entity entity : world.getEntities()) {
@@ -148,7 +148,7 @@ public final class VirtualWorld extends PApplet
         }
     }
 
-    public static void parseCommandLine(String[] args) {
+    private static void parseCommandLine(String[] args) {
         for (String arg : args) {
             switch (arg) {
                 case FAST_FLAG:

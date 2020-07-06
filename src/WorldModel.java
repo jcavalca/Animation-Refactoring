@@ -46,7 +46,7 @@ public final class WorldModel
         this.addEntity(entity);
     }
 
-    public boolean withinBounds(Point pos) {
+    private boolean withinBounds(Point pos) {
         return pos.getY() >= 0 && pos.getY() < this.numRows && pos.getX() >= 0
                 && pos.getX() < this.numCols;
     }
@@ -65,7 +65,7 @@ public final class WorldModel
             }
         }
 
-        return Functions.nearestEntity(ofType, pos);
+        return pos.nearestEntity(ofType);
     }
 
     /*
@@ -78,7 +78,7 @@ public final class WorldModel
             this.entities.add(entity);
         }
     }
-    public  void moveEntity(Entity entity, Point pos) {
+    public void moveEntity(Entity entity, Point pos) {
         Point oldPos = entity.getPosition();
         if (this.withinBounds(pos) && !pos.equals(oldPos)) {
             this.setOccupancyCell(oldPos, null);
@@ -92,7 +92,7 @@ public final class WorldModel
         this.removeEntityAt(entity.getPosition());
     }
 
-    public void removeEntityAt(Point pos) {
+    private void removeEntityAt(Point pos) {
         if (this.withinBounds(pos) && this.getOccupancyCell(pos) != null) {
             Entity entity = this.getOccupancyCell(pos);
 
@@ -131,21 +131,21 @@ public final class WorldModel
         }
     }
 
-    public Entity getOccupancyCell(Point pos) {
+    private Entity getOccupancyCell(Point pos) {
         return this.occupancy[pos.getY()][pos.getX()];
     }
 
-    public void setOccupancyCell(
+    private void setOccupancyCell(
             Point pos, Entity entity)
     {
         this.occupancy[pos.getY()][pos.getX()] = entity;
     }
 
-    public Background getBackgroundCell(Point pos) {
+    private Background getBackgroundCell(Point pos) {
         return this.background[pos.getY()][pos.getX()];
     }
 
-    public void setBackgroundCell(
+    private void setBackgroundCell(
             Point pos, Background background)
     {
         this.background[pos.getY()][pos.getX()] = background;

@@ -31,7 +31,7 @@ public final class Action
         }
     }
 
-    public  void executeAnimationAction(
+    private  void executeAnimationAction(
             EventScheduler scheduler)
     {
         entity.nextImage();
@@ -46,7 +46,7 @@ public final class Action
     }
 
 
-    public void executeActivityAction(
+    private void executeActivityAction(
             EventScheduler scheduler)
     {
         switch (entity.getKind()) {

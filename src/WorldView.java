@@ -26,11 +26,11 @@ public final class WorldView
         this.viewport = new Viewport(numRows, numCols);
     }
 
-    public static int clamp(int value, int low, int high) {
+    private static int clamp(int value, int low, int high) {
         return Math.min(high, Math.max(value, low));
     }
 
-    public  void shiftView(int colDelta, int rowDelta) {
+    public void shiftView(int colDelta, int rowDelta) {
         int newCol = clamp(this.viewport.getCol() + colDelta, 0,
                 this.world.getNumCols() - this.viewport.getNumCols());
         int newRow = clamp(this.viewport.getRow() + rowDelta, 0,
@@ -39,7 +39,7 @@ public final class WorldView
         this.viewport.shift(newCol, newRow);
     }
 
-    public void drawBackground() {
+    private void drawBackground() {
         for (int row = 0; row < this.viewport.getNumRows(); row++) {
             for (int col = 0; col < this.viewport.getNumCols(); col++) {
                 Point worldPoint = this.viewport.viewportToWorld(col, row);
@@ -53,7 +53,7 @@ public final class WorldView
         }
     }
 
-    public void drawEntities() {
+    private void drawEntities() {
         for (Entity entity : this.world.getEntities()) {
             Point pos = entity.getPosition();
 
