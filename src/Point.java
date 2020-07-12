@@ -3,48 +3,48 @@ import java.util.Optional;
 
 public final class Point
 {
-    private final int x;
-    private final int y;
+    private final int X;
+    private final int Y;
 
     public Point(int x, int y) {
-        this.x = x;
-        this.y = y;
+        this.X = x;
+        this.Y = y;
     }
 
     public String toString() {
-        return "(" + x + "," + y + ")";
+        return "(" + X + "," + Y + ")";
     }
 
     public boolean equals(Object other) {
-        return other instanceof Point && ((Point)other).x == this.x
-                && ((Point)other).y == this.y;
+        return other instanceof Point && ((Point)other).X == this.X
+                && ((Point)other).Y == this.Y;
     }
 
     public int hashCode() {
         int result = 17;
-        result = result * 31 + x;
-        result = result * 31 + y;
+        result = result * 31 + X;
+        result = result * 31 + Y;
         return result;
     }
 
     public boolean adjacent(Point p2) {
-        return (this.x == p2.x && Math.abs(this.y - p2.y) == 1) || (this.y == p2.y
-                && Math.abs(this.x - p2.x) == 1);
+        return (this.X == p2.X && Math.abs(this.Y - p2.Y) == 1) || (this.Y == p2.Y
+                && Math.abs(this.X - p2.X) == 1);
     }
 
     private int distanceSquared(Point p2) {
-        int deltaX = this.x - p2.x;
-        int deltaY = this.y - p2.y;
+        int deltaX = this.X - p2.X;
+        int deltaY = this.Y - p2.Y;
 
         return deltaX * deltaX + deltaY * deltaY;
     }
 
     public int getX() {
-        return x;
+        return X;
     }
 
     public int getY() {
-        return y;
+        return Y;
     }
 
     public Optional<Entity> nearestEntity( //// Gotta solve

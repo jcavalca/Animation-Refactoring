@@ -143,7 +143,7 @@ public final class VirtualWorld extends PApplet
     private static void scheduleActions(
             WorldModel world, EventScheduler scheduler, ImageStore imageStore)
     {
-        for (Entity entity : world.getEntities()) {
+        for (Entity entity : world.getENTITIES()) {
             entity.scheduleActions(scheduler, world, imageStore);
         }
     }

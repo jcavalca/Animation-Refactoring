@@ -2,14 +2,14 @@ import java.util.*;
 
 public final class EventScheduler
 {
-    private final PriorityQueue<Event> eventQueue;
-    private final Map<Entity, List<Event>> pendingEvents;
-    private final double timeScale;
+    private final PriorityQueue<Event> EVENTQUEUE;
+    private final Map<Entity, List<Event>> PENDINDEVENTS;
+    private final double TIMESCALE;
 
-    public EventScheduler(double timeScale) {
-        this.eventQueue = new PriorityQueue<>(new EventComparator());
-        this.pendingEvents = new HashMap<>();
-        this.timeScale = timeScale;
+    public EventScheduler(double TIMESCALE) {
+        this.EVENTQUEUE = new PriorityQueue<>(new EventComparator());
+        this.PENDINDEVENTS = new HashMap<>();
+        this.TIMESCALE = TIMESCALE;
     }
 
     public void scheduleEvent(
@@ -18,25 +18,25 @@ public final class EventScheduler
             long afterPeriod)
     {
         long time = System.currentTimeMillis() + (long)(afterPeriod
-                * this.timeScale);
+                * this.TIMESCALE);
         Event event = new Event(action, time, entity);
 
-        this.eventQueue.add(event);
+        this.EVENTQUEUE.add(event);
 
         // update list of pending events for the given entity
-        List<Event> pending = this.pendingEvents.getOrDefault(entity,
+        List<Event> pending = this.PENDINDEVENTS.getOrDefault(entity,
                 new LinkedList<>());
         pending.add(event);
-        this.pendingEvents.put(entity, pending);
+        this.PENDINDEVENTS.put(entity, pending);
     }
 
     public void unscheduleAllEvents(Entity entity)
     {
-        List<Event> pending = this.pendingEvents.remove(entity);
+        List<Event> pending = this.PENDINDEVENTS.remove(entity);
 
         if (pending != null) {
             for (Event event : pending) {
-                this.eventQueue.remove(event);
+                this.EVENTQUEUE.remove(event);
             }
         }
     }
@@ -44,7 +44,7 @@ public final class EventScheduler
     private void removePendingEvent(
              Event event)
     {
-        List<Event> pending = this.pendingEvents.get(event.getEntity());
+        List<Event> pending = this.PENDINDEVENTS.get(event.getENTITY());
 
         if (pending != null) {
             pending.remove(event);
@@ -52,13 +52,13 @@ public final class EventScheduler
     }
 
     public void updateOnTime(long time) {
-        while (!this.eventQueue.isEmpty()
-                && this.eventQueue.peek().getTime() < time) {
-            Event next = this.eventQueue.poll();
+        while (!this.EVENTQUEUE.isEmpty()
+                && this.EVENTQUEUE.peek().getTIME() < time) {
+            Event next = this.EVENTQUEUE.poll();
 
             this.removePendingEvent(next);
 
-            next.getAction().executeAction(this);
+            next.getACTION().executeAction(this);
         }
     }
 }

@@ -1,7 +1,6 @@
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -84,7 +83,7 @@ public final class Functions {
         int lineNumber = 0;
         while (in.hasNextLine()) {
             try {
-                processImageLine(imageStore.getImages(), in.nextLine(), screen);
+                processImageLine(imageStore.getIMAGES(), in.nextLine(), screen);
             } catch (NumberFormatException e) {
                 System.out.println(
                         String.format("Image format error on line %d",

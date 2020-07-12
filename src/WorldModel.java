@@ -4,24 +4,23 @@ import java.util.*;
 
 public final class WorldModel
 {
-    private final int numRows;
-    private final int numCols;
-    private final Background background[][];
-    private final Entity occupancy[][];
-    private final Set<Entity> entities;
+    private final int NUMROWS;
+    private final int NUMCOLS;
+    private final Background BACKGROUND[][];
+    private final Entity OCCUPANCY[][];
+    private final Set<Entity> ENTITIES;
 
-    public WorldModel(int numRows, int numCols, Background defaultBackground) {
-        this.numRows = numRows;
-        this.numCols = numCols;
-        this.background = new Background[numRows][numCols];
-        this.occupancy = new Entity[numRows][numCols];
-        this.entities = new HashSet<>();
+    public WorldModel(int NUMROWS, int numCols, Background defaultBackground) {
+        this.NUMROWS = NUMROWS;
+        this.NUMCOLS = numCols;
+        this.BACKGROUND = new Background[NUMROWS][numCols];
+        this.OCCUPANCY = new Entity[NUMROWS][numCols];
+        this.ENTITIES = new HashSet<>();
 
-        for (int row = 0; row < numRows; row++) {
-            Arrays.fill(this.background[row], defaultBackground);
+        for (int row = 0; row < NUMROWS; row++) {
+            Arrays.fill(this.BACKGROUND[row], defaultBackground);
         }
     }
-
 
     public Optional<Point> findOpenAround(Point pos) {
         for (int dy = -Functions.ORE_REACH; dy <= Functions.ORE_REACH; dy++) {
@@ -47,8 +46,8 @@ public final class WorldModel
     }
 
     private boolean withinBounds(Point pos) {
-        return pos.getY() >= 0 && pos.getY() < this.numRows && pos.getX() >= 0
-                && pos.getX() < this.numCols;
+        return pos.getY() >= 0 && pos.getY() < this.NUMROWS && pos.getX() >= 0
+                && pos.getX() < this.NUMCOLS;
     }
 
     public boolean isOccupied(Point pos) {
@@ -59,8 +58,8 @@ public final class WorldModel
              Point pos, EntityKind kind)
     {
         List<Entity> ofType = new LinkedList<>();
-        for (Entity entity : this.entities) {
-            if (entity.getKind() == kind) {
+        for (Entity entity : this.ENTITIES) {
+            if (entity.getKIND() == kind) {
                 ofType.add(entity);
             }
         }
@@ -75,7 +74,7 @@ public final class WorldModel
     public void addEntity( Entity entity) {
         if (this.withinBounds(entity.getPosition())) {
             this.setOccupancyCell(entity.getPosition(), entity);
-            this.entities.add(entity);
+            this.ENTITIES.add(entity);
         }
     }
     public void moveEntity(Entity entity, Point pos) {
@@ -99,7 +98,7 @@ public final class WorldModel
             /* This moves the entity just outside of the grid for
              * debugging purposes. */
             entity.setPosition(new Point(-1, -1));
-            this.entities.remove(entity);
+            this.ENTITIES.remove(entity);
             this.setOccupancyCell(pos, null);
         }
     }
@@ -108,7 +107,7 @@ public final class WorldModel
            Point pos)
     {
         if (this.withinBounds(pos)) {
-            return Optional.of(Entity.getCurrentImage(this.getBackgroundCell(pos)));
+            return Optional.of(this.getBackgroundCell(pos).getCurrentImage());
         }
         else {
             return Optional.empty();
@@ -132,35 +131,35 @@ public final class WorldModel
     }
 
     private Entity getOccupancyCell(Point pos) {
-        return this.occupancy[pos.getY()][pos.getX()];
+        return this.OCCUPANCY[pos.getY()][pos.getX()];
     }
 
     private void setOccupancyCell(
             Point pos, Entity entity)
     {
-        this.occupancy[pos.getY()][pos.getX()] = entity;
+        this.OCCUPANCY[pos.getY()][pos.getX()] = entity;
     }
 
     private Background getBackgroundCell(Point pos) {
-        return this.background[pos.getY()][pos.getX()];
+        return this.BACKGROUND[pos.getY()][pos.getX()];
     }
 
     private void setBackgroundCell(
             Point pos, Background background)
     {
-        this.background[pos.getY()][pos.getX()] = background;
+        this.BACKGROUND[pos.getY()][pos.getX()] = background;
     }
 
-    public int getNumRows() {
-        return numRows;
+    public int getNUMROWS() {
+        return NUMROWS;
     }
 
     public int getNumCols() {
-        return numCols;
+        return NUMCOLS;
     }
 
-    public Set<Entity> getEntities() {
-        return entities;
+    public Set<Entity> getENTITIES() {
+        return ENTITIES;
     }
 }
 
