@@ -26,7 +26,8 @@
             <y:AttributeLabel xml:space="preserve">- ID: String
 - IMAGES: List&lt;PImage&gt;
 - imageIndex: int</y:AttributeLabel>
-            <y:MethodLabel xml:space="preserve">+ getImageIndex: int
+            <y:MethodLabel xml:space="preserve">+ getCurrentImage: PImage
++ getImageIndex: int
 + getID: String
 + getIMAGES: List&lt;PImage&gt;</y:MethodLabel>
           </y:UML>
@@ -402,7 +403,8 @@ ANIMATION</y:AttributeLabel>
 - resourceCount: int
 - ACTIONPERIOD: int
 - ANIMATIONPERIOD: int</y:AttributeLabel>
-            <y:MethodLabel xml:space="preserve">+ getANIMATIONPERIOD: int
+            <y:MethodLabel xml:space="preserve">+ getCurrentImage: PImage    
++ getANIMATIONPERIOD: int
 + nextImage
 + executeMinerFullActivity
 + executeMinerNotFullActivity
@@ -428,7 +430,6 @@ ANIMATION</y:AttributeLabel>
 - createOreBlob: Entity    &lt;&lt;static&gt;&gt;
 - createQuake: Entity    &lt;&lt;static&gt;&gt;
 + createVein: Entity    &lt;&lt;static&gt;&gt;
-+ getCurrentImage: PImage    &lt;&lt;static&gt;&gt;
 + getKIND: EntityKind
 + getPosition: Point
 + SetPosition
