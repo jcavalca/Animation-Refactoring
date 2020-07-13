@@ -25,7 +25,7 @@ public final class WorldModel
     public Optional<Point> findOpenAround(Point pos) {
         for (int dy = -Functions.ORE_REACH; dy <= Functions.ORE_REACH; dy++) {
             for (int dx = -Functions.ORE_REACH; dx <= Functions.ORE_REACH; dx++) {
-                Point newPt = new Point(pos.getX() + dx, pos.getY() + dy);
+                Point newPt = new Point(pos.x + dx, pos.y + dy);
                 if (this.withinBounds(newPt) && !this.isOccupied(newPt)) {
                     return Optional.of(newPt);
                 }
@@ -46,8 +46,8 @@ public final class WorldModel
     }
 
     private boolean withinBounds(Point pos) {
-        return pos.getY() >= 0 && pos.getY() < this.NUMROWS && pos.getX() >= 0
-                && pos.getX() < this.NUMCOLS;
+        return pos.y >= 0 && pos.y < this.NUMROWS && pos.x >= 0
+                && pos.x < this.NUMCOLS;
     }
 
     public boolean isOccupied(Point pos) {
@@ -131,23 +131,23 @@ public final class WorldModel
     }
 
     private Entity getOccupancyCell(Point pos) {
-        return this.OCCUPANCY[pos.getY()][pos.getX()];
+        return this.OCCUPANCY[pos.y][pos.x];
     }
 
     private void setOccupancyCell(
             Point pos, Entity entity)
     {
-        this.OCCUPANCY[pos.getY()][pos.getX()] = entity;
+        this.OCCUPANCY[pos.y][pos.x] = entity;
     }
 
     private Background getBackgroundCell(Point pos) {
-        return this.BACKGROUND[pos.getY()][pos.getX()];
+        return this.BACKGROUND[pos.y][pos.x];
     }
 
     private void setBackgroundCell(
             Point pos, Background background)
     {
-        this.BACKGROUND[pos.getY()][pos.getX()] = background;
+        this.BACKGROUND[pos.y][pos.x] = background;
     }
 
     public int getNUMROWS() {
