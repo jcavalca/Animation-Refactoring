@@ -4,29 +4,29 @@ import processing.core.PImage;
 
 public final class Background
 {
-    private final String ID;
-    private final List<PImage> IMAGES;
+    private final String id;
+    private final List<PImage> images;
     private int imageIndex;
 
-    public Background(String ID, List<PImage> IMAGES) {
-        this.ID = ID;
-        this.IMAGES = IMAGES;
+    public Background(String id, List<PImage> images) {
+        this.id = id;
+        this.images = images;
     }
 
     public int getImageIndex() {
         return imageIndex;
     }
 
-    public String getID() {
-        return ID;
+    public String getId() {
+        return id;
     }
 
-    public List<PImage> getIMAGES() {
-        return IMAGES;
+    public List<PImage> getImages() {
+        return images;
     }
 
     public PImage getCurrentImage() {
-            return this.getIMAGES().get(this.getImageIndex());
+            return this.getImages().get(this.getImageIndex());
         }
     }
 

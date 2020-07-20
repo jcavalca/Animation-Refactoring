@@ -5,56 +5,56 @@ import processing.core.PImage;
 
 public final class Entity
 {
-    private final EntityKind KIND;
-    private final String ID;
+    private final EntityKind kind;
+    private final String id;
     private Point position;
-    private final List<PImage> IMAGES;
+    private final List<PImage> images;
     private int imageIndex;
-    private final int RESOURCELIMIT;
+    private final int resourceLimit;
     private int resourceCount;
-    private final int ACTIONPERIOD;
-    private final int ANIMATIONPERIOD;
+    private final int actionPeriod;
+    private final int animationPeriod;
 
     public Entity(
-            EntityKind KIND,
-            String ID,
+            EntityKind kind,
+            String id,
             Point position,
-            List<PImage> IMAGES,
-            int RESOURCELIMIT,
+            List<PImage> images,
+            int resourceLimit,
             int resourceCount,
-            int ACTIONPERIOD,
-            int ANIMATIONPERIOD)
+            int actionPeriod,
+            int animationPeriod)
     {
-        this.KIND = KIND;
-        this.ID = ID;
+        this.kind = kind;
+        this.id = id;
         this.position = position;
-        this.IMAGES = IMAGES;
+        this.images = images;
         this.imageIndex = 0;
-        this.RESOURCELIMIT = RESOURCELIMIT;
+        this.resourceLimit = resourceLimit;
         this.resourceCount = resourceCount;
-        this.ACTIONPERIOD = ACTIONPERIOD;
-        this.ANIMATIONPERIOD = ANIMATIONPERIOD;
+        this.actionPeriod = actionPeriod;
+        this.animationPeriod = animationPeriod;
     }
 
     public PImage getCurrentImage() {
-        return this.IMAGES.get(this.imageIndex);
+        return this.images.get(this.imageIndex);
     }
 
-    public int getANIMATIONPERIOD() {
-        switch (KIND) {
+    public int getAnimationPeriod() {
+        switch (kind) {
             case MINER_FULL:
             case MINER_NOT_FULL:
             case ORE_BLOB:
             case QUAKE:
-                return ANIMATIONPERIOD;
+                return animationPeriod;
             default:
                 throw new UnsupportedOperationException(
                         String.format("getAnimationPeriod not supported for %s",
-                                KIND));
+                                kind));
         }
     }
     public void nextImage() {
-        imageIndex = (imageIndex + 1) % IMAGES.size();
+        imageIndex = (imageIndex + 1) % images.size();
     }
 
     public void executeMinerFullActivity(
@@ -73,7 +73,7 @@ public final class Entity
         else {
             scheduler.scheduleEvent(this,
                     this.createActivityAction(world, imageStore),
-                    this.ACTIONPERIOD);
+                    this.actionPeriod);
         }
     }
 
@@ -93,7 +93,7 @@ public final class Entity
         {
             scheduler.scheduleEvent(this,
                     this.createActivityAction(world, imageStore),
-                    this.ACTIONPERIOD);
+                    this.actionPeriod);
         }
     }
 
@@ -107,8 +107,8 @@ public final class Entity
         world.removeEntity(this);
         scheduler.unscheduleAllEvents(this);
 
-        Entity blob = Entity.createOreBlob(this.ID + Functions.BLOB_ID_SUFFIX, pos,
-                this.ACTIONPERIOD / Functions.BLOB_PERIOD_SCALE,
+        Entity blob = Entity.createOreBlob(this.id + Functions.BLOB_ID_SUFFIX, pos,
+                this.actionPeriod / Functions.BLOB_PERIOD_SCALE,
                 Functions.BLOB_ANIMATION_MIN + Functions.rand.nextInt(
                         Functions.BLOB_ANIMATION_MAX
                                 - Functions.BLOB_ANIMATION_MIN),
@@ -125,7 +125,7 @@ public final class Entity
     {
         Optional<Entity> blobTarget =
                 world.findNearest(this.position, EntityKind.VEIN);
-        long nextPeriod = this.ACTIONPERIOD;
+        long nextPeriod = this.actionPeriod;
 
         if (blobTarget.isPresent()) {
             Point tgtPos = blobTarget.get().position;
@@ -135,7 +135,7 @@ public final class Entity
                         imageStore.getImageList(Functions.QUAKE_KEY));
 
                 world.addEntity(quake);
-                nextPeriod += this.ACTIONPERIOD;
+                nextPeriod += this.actionPeriod;
                 quake.scheduleActions(scheduler, world, imageStore);
             }
         }
@@ -163,7 +163,7 @@ public final class Entity
         Optional<Point> openPt = world.findOpenAround(this.position);
 
         if (openPt.isPresent()) {
-            Entity ore = Entity.createOre(Functions.ORE_ID_PREFIX + this.ID, openPt.get(),
+            Entity ore = Entity.createOre(Functions.ORE_ID_PREFIX + this.id, openPt.get(),
                     Functions.ORE_CORRUPT_MIN + Functions.rand.nextInt(
                             Functions.ORE_CORRUPT_MAX - Functions.ORE_CORRUPT_MIN),
                     imageStore.getImageList(Functions.ORE_KEY));
@@ -173,7 +173,7 @@ public final class Entity
 
         scheduler.scheduleEvent(this,
                 this.createActivityAction(world, imageStore),
-                this.ACTIONPERIOD);
+                this.actionPeriod);
     }
 
     public void scheduleActions(
@@ -181,53 +181,53 @@ public final class Entity
             WorldModel world,
             ImageStore imageStore)
     {
-        switch (this.KIND) {
+        switch (this.kind) {
             case MINER_FULL:
                 scheduler.scheduleEvent(this,
                         this.createActivityAction(world, imageStore),
-                        this.ACTIONPERIOD);
+                        this.actionPeriod);
                 scheduler.scheduleEvent(this,
                         this.createAnimationAction( 0),
-                        this.getANIMATIONPERIOD());
+                        this.getAnimationPeriod());
                 break;
 
             case MINER_NOT_FULL:
                 scheduler.scheduleEvent(this,
                         this.createActivityAction( world, imageStore),
-                        this.ACTIONPERIOD);
+                        this.actionPeriod);
                 scheduler.scheduleEvent(this,
                         this.createAnimationAction(0),
-                        this.getANIMATIONPERIOD());
+                        this.getAnimationPeriod());
                 break;
 
             case ORE:
                 scheduler.scheduleEvent(this,
                         this.createActivityAction(world, imageStore),
-                        this.ACTIONPERIOD);
+                        this.actionPeriod);
                 break;
 
             case ORE_BLOB:
                 scheduler.scheduleEvent(this,
                         this.createActivityAction(world, imageStore),
-                        this.ACTIONPERIOD);
+                        this.actionPeriod);
                 scheduler.scheduleEvent(this,
                         this.createAnimationAction(0),
-                        this.getANIMATIONPERIOD());
+                        this.getAnimationPeriod());
                 break;
 
             case QUAKE:
                 scheduler.scheduleEvent(this,
                         this.createActivityAction(world, imageStore),
-                        this.ACTIONPERIOD);
+                        this.actionPeriod);
                 scheduler.scheduleEvent(this, this.createAnimationAction(
                         Functions.QUAKE_ANIMATION_REPEAT_COUNT),
-                        this.getANIMATIONPERIOD());
+                        this.getAnimationPeriod());
                 break;
 
             case VEIN:
                 scheduler.scheduleEvent(this,
                         this.createActivityAction(world, imageStore),
-                        this.ACTIONPERIOD);
+                        this.actionPeriod);
                 break;
 
             default:
@@ -239,11 +239,11 @@ public final class Entity
             EventScheduler scheduler,
             ImageStore imageStore)
     {
-        if (this.resourceCount >= this.RESOURCELIMIT) {
-            Entity miner = Entity.createMinerFull(this.ID, this.RESOURCELIMIT,
-                    this.position, this.ACTIONPERIOD,
-                    this.ANIMATIONPERIOD,
-                    this.IMAGES);
+        if (this.resourceCount >= this.resourceLimit) {
+            Entity miner = Entity.createMinerFull(this.id, this.resourceLimit,
+                    this.position, this.actionPeriod,
+                    this.animationPeriod,
+                    this.images);
 
             world.removeEntity(this);
             scheduler.unscheduleAllEvents(this);
@@ -261,10 +261,10 @@ public final class Entity
             EventScheduler scheduler,
             ImageStore imageStore)
     {
-        Entity miner = Entity.createMinerNotFull(this.ID, this.RESOURCELIMIT,
-                this.position, this.ACTIONPERIOD,
-                this.ANIMATIONPERIOD,
-                this.IMAGES);
+        Entity miner = Entity.createMinerNotFull(this.id, this.resourceLimit,
+                this.position, this.actionPeriod,
+                this.animationPeriod,
+                this.images);
 
         world.removeEntity(this);
         scheduler.unscheduleAllEvents(this);
@@ -372,14 +372,14 @@ public final class Entity
 
         Optional<Entity> occupant = world.getOccupant(newPos);
 
-        if (horiz == 0 || (occupant.isPresent() && !(occupant.get().KIND
+        if (horiz == 0 || (occupant.isPresent() && !(occupant.get().kind
                 == EntityKind.ORE)))
         {
             int vert = Integer.signum(destPos.y - this.position.y);
             newPos = new Point(this.position.x, this.position.y + vert);
             occupant = world.getOccupant(newPos);
 
-            if (vert == 0 || (occupant.isPresent() && !(occupant.get().KIND
+            if (vert == 0 || (occupant.isPresent() && !(occupant.get().kind
                     == EntityKind.ORE)))
             {
                 newPos = this.position;
@@ -390,14 +390,14 @@ public final class Entity
     }
 
     public Action createAnimationAction(int repeatCount) {
-        return new Action(ActionKind.ANIMATION, this, null, null,
+        return new Animation(this, null, null,
                 repeatCount);
     }
 
     private Action createActivityAction(
             WorldModel world, ImageStore imageStore)
     {
-        return new Action(ActionKind.ACTIVITY, this, world, imageStore, 0);
+        return new Activity( this, world, imageStore, 0);
     }
 
     public static Entity createBlacksmith(
@@ -473,8 +473,8 @@ public final class Entity
 
     // Getters and Setters Created!!
 
-    public EntityKind getKIND() {
-        return KIND;
+    public EntityKind getKind() {
+        return kind;
     }
 
     public Point getPosition() {

@@ -7,23 +7,23 @@ import processing.core.PImage;
 
 public final class ImageStore
 {
-    private final Map<String, List<PImage>> IMAGES;
-    private final List<PImage> DEFAULTIMAGES;
+    private final Map<String, List<PImage>> images;
+    private final List<PImage> defaultImages;
 
     public ImageStore(PImage defaultImage) {
-        this.IMAGES = new HashMap<>();
-        DEFAULTIMAGES = new LinkedList<>();
-        DEFAULTIMAGES.add(defaultImage);
+        this.images = new HashMap<>();
+        defaultImages = new LinkedList<>();
+        defaultImages.add(defaultImage);
     }
 
     public List<PImage> getImageList(String key) {
-        return this.IMAGES.getOrDefault(key, this.DEFAULTIMAGES);
+        return this.images.getOrDefault(key, this.defaultImages);
     }
 
     // getters
 
 
-    public Map<String, List<PImage>> getIMAGES() {
-        return IMAGES;
+    public Map<String, List<PImage>> getImages() {
+        return images;
     }
 }

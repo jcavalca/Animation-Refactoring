@@ -1,27 +1,27 @@
 public final class Event
 {
-    private final Action ACTION;
-    private final long TIME;
-    private final Entity ENTITY;
+    private final Action action;
+    private final long time;
+    private final Entity entity;
 
-    public Event(Action ACTION, long TIME, Entity entity) {
-        this.ACTION = ACTION;
-        this.TIME = TIME;
-        this.ENTITY = entity;
+    public Event(Action ACTION, long time, Entity entity) {
+        this.action = ACTION;
+        this.time = time;
+        this.entity = entity;
     }
 
     // getters created
 
 
-    public long getTIME() {
-        return TIME;
+    public long getTime() {
+        return time;
     }
 
-    public Action getACTION() {
-        return ACTION;
+    public Action getAction() {
+        return action;
     }
 
-    public Entity getENTITY() {
-        return ENTITY;
+    public Entity getEntity() {
+        return entity;
     }
 }

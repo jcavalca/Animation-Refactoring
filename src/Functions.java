@@ -83,7 +83,7 @@ public final class Functions {
         int lineNumber = 0;
         while (in.hasNextLine()) {
             try {
-                processImageLine(imageStore.getIMAGES(), in.nextLine(), screen);
+                processImageLine(imageStore.getImages(), in.nextLine(), screen);
             } catch (NumberFormatException e) {
                 System.out.println(
                         String.format("Image format error on line %d",

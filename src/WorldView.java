@@ -5,25 +5,25 @@ import java.util.Optional;
 
 public final class WorldView
 {
-    private final PApplet SCREEN;
-    private final WorldModel WORLD;
-    private final int TILEWIDTH;
-    private final int TILEHEIGHT;
-    private final Viewport VIEWPORT;
+    private final PApplet screen;
+    private final WorldModel world;
+    private final int tileWidth;
+    private final int tileHeight;
+    private final Viewport viewport;
 
     public WorldView(
             int numRows,
             int numCols,
-            PApplet SCREEN,
-            WorldModel WORLD,
-            int TILEWIDTH,
-            int TILEHEIGHT)
+            PApplet screen,
+            WorldModel world,
+            int tileWidth,
+            int tileHeight)
     {
-        this.SCREEN = SCREEN;
-        this.WORLD = WORLD;
-        this.TILEWIDTH = TILEWIDTH;
-        this.TILEHEIGHT = TILEHEIGHT;
-        this.VIEWPORT = new Viewport(numRows, numCols);
+        this.screen = screen;
+        this.world = world;
+        this.tileWidth = tileWidth;
+        this.tileHeight = tileHeight;
+        this.viewport = new Viewport(numRows, numCols);
     }
 
     private int clamp(int value, int low, int high) {
@@ -31,37 +31,37 @@ public final class WorldView
     }
 
     public void shiftView(int colDelta, int rowDelta) {
-        int newCol = clamp(this.VIEWPORT.getCol() + colDelta, 0,
-                this.WORLD.getNumCols() - this.VIEWPORT.getNUMCOLS());
-        int newRow = clamp(this.VIEWPORT.getRow() + rowDelta, 0,
-                this.WORLD.getNUMROWS() - this.VIEWPORT.getNUMROWS());
+        int newCol = clamp(this.viewport.getCol() + colDelta, 0,
+                this.world.getNumCols() - this.viewport.getNumCols());
+        int newRow = clamp(this.viewport.getRow() + rowDelta, 0,
+                this.world.getNumRows() - this.viewport.getNumRows());
 
-        this.VIEWPORT.shift(newCol, newRow);
+        this.viewport.shift(newCol, newRow);
     }
 
     private void drawBackground() {
-        for (int row = 0; row < this.VIEWPORT.getNUMROWS(); row++) {
-            for (int col = 0; col < this.VIEWPORT.getNUMCOLS(); col++) {
-                Point worldPoint = this.VIEWPORT.viewportToWorld(col, row);
+        for (int row = 0; row < this.viewport.getNumRows(); row++) {
+            for (int col = 0; col < this.viewport.getNumCols(); col++) {
+                Point worldPoint = this.viewport.viewportToWorld(col, row);
                 Optional<PImage> image =
-                        this.WORLD.getBackgroundImage(worldPoint);
+                        this.world.getBackgroundImage(worldPoint);
                 if (image.isPresent()) {
-                    this.SCREEN.image(image.get(), col * this.TILEWIDTH,
-                            row * this.TILEHEIGHT);
+                    this.screen.image(image.get(), col * this.tileWidth,
+                            row * this.tileHeight);
                 }
             }
         }
     }
 
     private void drawEntities() {
-        for (Entity entity : this.WORLD.getENTITIES()) {
+        for (Entity entity : this.world.getEntities()) {
             Point pos = entity.getPosition();
 
-            if (this.VIEWPORT.contains(pos)) {
-                Point viewPoint = this.VIEWPORT.worldToViewport(pos.x, pos.y);
-                this.SCREEN.image(entity.getCurrentImage(),
-                        viewPoint.x * this.TILEWIDTH,
-                        viewPoint.y * this.TILEHEIGHT);
+            if (this.viewport.contains(pos)) {
+                Point viewPoint = this.viewport.worldToViewport(pos.x, pos.y);
+                this.screen.image(entity.getCurrentImage(),
+                        viewPoint.x * this.tileWidth,
+                        viewPoint.y * this.tileHeight);
             }
         }
     }
