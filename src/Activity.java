@@ -1,12 +1,12 @@
 public class Activity implements Action{
 
-    private final Entity entity;
+    private final ActionEntity entity;
     private final WorldModel world;
     private final ImageStore imageStore;
     private final int repeatCount;
 
     public Activity(
-            Entity entity,
+            ActionEntity entity,
             WorldModel world,
             ImageStore imageStore,
             int repeatCount)
@@ -20,43 +20,8 @@ public class Activity implements Action{
     public void executeAction(
             EventScheduler scheduler)
     {
-        switch (entity.getKind()) {
-            case MINER_FULL:
-                entity.executeMinerFullActivity(world,
-                        imageStore, scheduler);
-                break;
+        entity.executeActivity(world, imageStore, scheduler);
 
-            case MINER_NOT_FULL:
-                entity.executeMinerNotFullActivity(world,
-                        imageStore, scheduler);
-                break;
-
-            case ORE:
-                entity.executeOreActivity(world,
-                        imageStore, scheduler);
-                break;
-
-            case ORE_BLOB:
-                entity.executeOreBlobActivity(world,
-                        imageStore, scheduler);
-                break;
-
-            case QUAKE:
-                entity.executeQuakeActivity(world,
-                        imageStore, scheduler);
-                break;
-
-            case VEIN:
-                entity.executeVeinActivity(world,
-                        imageStore, scheduler);
-                break;
-
-            default:
-                throw new UnsupportedOperationException(String.format(
-                        "executeActivityAction not supported for %s",
-                        entity.getKind()));
-        }
     }
-
 
 }
