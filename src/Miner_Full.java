@@ -3,14 +3,13 @@ import java.util.Optional;
 
 import processing.core.PImage;
 
-public class Miner_Full implements Entity, ActionEntity{
+public class Miner_Full implements Entity, ActionEntity {
 
     private final String id;
     private Point position;
     private final List<PImage> images;
     private int imageIndex;
     private final int resourceLimit;
-    private int resourceCount;
     private final int actionPeriod;
     private final int animationPeriod;
 
@@ -19,16 +18,13 @@ public class Miner_Full implements Entity, ActionEntity{
             Point position,
             List<PImage> images,
             int resourceLimit,
-            int resourceCount,
             int actionPeriod,
-            int animationPeriod)
-    {
+            int animationPeriod) {
         this.id = id;
         this.position = position;
         this.images = images;
         this.imageIndex = 0;
         this.resourceLimit = resourceLimit;
-        this.resourceCount = resourceCount;
         this.actionPeriod = actionPeriod;
         this.animationPeriod = animationPeriod;
     }
@@ -48,17 +44,14 @@ public class Miner_Full implements Entity, ActionEntity{
     public void executeActivity(
             WorldModel world,
             ImageStore imageStore,
-            EventScheduler scheduler)
-    {
+            EventScheduler scheduler) {
         Optional<Entity> fullTarget =
                 world.findNearest(this.position, Blacksmith.class);
 
         if (fullTarget.isPresent() && this.moveToFull(world,
-                fullTarget.get(), scheduler))
-        {
+                fullTarget.get(), scheduler)) {
             transformFull(world, scheduler, imageStore);
-        }
-        else {
+        } else {
             scheduler.scheduleEvent(this,
                     this.createActivityAction(world, imageStore),
                     this.actionPeriod);
@@ -68,21 +61,19 @@ public class Miner_Full implements Entity, ActionEntity{
     public void scheduleActions(
             EventScheduler scheduler,
             WorldModel world,
-            ImageStore imageStore)
-    {
+            ImageStore imageStore) {
         scheduler.scheduleEvent(this,
                 this.createActivityAction(world, imageStore),
                 this.actionPeriod);
         scheduler.scheduleEvent(this,
-                this.createAnimationAction( 0),
+                this.createAnimationAction(0),
                 this.getAnimationPeriod());
     }
 
     private void transformFull(
             WorldModel world,
             EventScheduler scheduler,
-            ImageStore imageStore)
-    {
+            ImageStore imageStore) {
         Miner_Not_Full miner = Factory.createMinerNotFull(this.id, this.resourceLimit,
                 this.position, this.actionPeriod,
                 this.animationPeriod,
@@ -98,12 +89,10 @@ public class Miner_Full implements Entity, ActionEntity{
     private boolean moveToFull(
             WorldModel world,
             Entity target,
-            EventScheduler scheduler)
-    {
+            EventScheduler scheduler) {
         if (this.position.adjacent(target.getPosition())) {
             return true;
-        }
-        else {
+        } else {
             Point nextPos = this.nextPositionMiner(world, target.getPosition());
 
             if (!this.position.equals(nextPos)) {
@@ -119,8 +108,7 @@ public class Miner_Full implements Entity, ActionEntity{
     }
 
     private Point nextPositionMiner(
-            WorldModel world, Point destPos)
-    {
+            WorldModel world, Point destPos) {
         int horiz = Integer.signum(destPos.x - this.position.x);
         Point newPos = new Point(this.position.x + horiz, this.position.y);
 
@@ -137,14 +125,13 @@ public class Miner_Full implements Entity, ActionEntity{
     }
 
     public Action createAnimationAction(int repeatCount) {
-        return new Animation(this, null, null,
+        return new Animation(this,
                 repeatCount);
     }
 
     public Action createActivityAction(
-            WorldModel world, ImageStore imageStore)
-    {
-        return new Activity( this, world, imageStore, 0);
+            WorldModel world, ImageStore imageStore) {
+        return new Activity(this, world, imageStore, 0);
     }
 
     // Getters and Setters Created!!
@@ -156,5 +143,5 @@ public class Miner_Full implements Entity, ActionEntity{
     public void setPosition(Point position) {
         this.position = position;
     }
-}
 
+}

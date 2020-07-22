@@ -21,7 +21,7 @@ public class Factory {
             List<PImage> images)
     {
         return new Miner_Full(id, position, images,
-                resourceLimit, resourceLimit, actionPeriod,
+                resourceLimit, actionPeriod,
                 animationPeriod);
     }
 
@@ -40,14 +40,14 @@ public class Factory {
     public static Obstacle createObstacle(
             String id, Point position, List<PImage> images)
     {
-        return new Obstacle(id, position, images, 0, 0, 0,
+        return new Obstacle(id, position, images,
                 0);
     }
 
     public static Ore createOre(
             String id, Point position, int actionPeriod, List<PImage> images)
     {
-        return new Ore(id, position, images, 0, 0,
+        return new Ore(id, position, images,
                 actionPeriod, 0);
     }
 
@@ -58,21 +58,21 @@ public class Factory {
             int animationPeriod,
             List<PImage> images)
     {
-        return new Ore_Blob( id, position, images, 0, 0,
+        return new Ore_Blob( id, position, images,
                 actionPeriod, animationPeriod);
     }
 
     public static Quake createQuake(
             Point position, List<PImage> images)
     {
-        return new Quake(Functions.QUAKE_ID, position, images, 0, 0,
+        return new Quake(Functions.QUAKE_ID, position, images,
                 Functions.QUAKE_ACTION_PERIOD, Functions.QUAKE_ANIMATION_PERIOD);
     }
 
     public static Vein createVein(
             String id, Point position, int actionPeriod, List<PImage> images)
     {
-        return new Vein(id, position, images, 0, 0,
+        return new Vein(id, position, images,
                 actionPeriod, 0);
     }
 }

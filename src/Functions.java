@@ -7,7 +7,6 @@ import java.util.Scanner;
 import processing.core.PImage;
 import processing.core.PApplet;
 
-// testing pushing to Git
 
 public final class Functions {
     public static final Random rand = new Random();
@@ -35,14 +34,6 @@ public final class Functions {
     private static final int KEYED_GREEN_IDX = 3;
     private static final int KEYED_BLUE_IDX = 4;
 
-    public static final int PROPERTY_KEY = 0;
-
-    public static final String BGND_KEY = "background";
-    public static final int BGND_NUM_PROPERTIES = 4;
-    public static final int BGND_ID = 1;
-    public static final int BGND_COL = 2;
-    public static final int BGND_ROW = 3;
-
     public static final String MINER_KEY = "miner";
     public static final int MINER_NUM_PROPERTIES = 7;
     public static final int MINER_ID = 1;
@@ -51,6 +42,18 @@ public final class Functions {
     public static final int MINER_LIMIT = 4;
     public static final int MINER_ACTION_PERIOD = 5;
     public static final int MINER_ANIMATION_PERIOD = 6;
+
+    public static final String BGND_KEY = "background";
+    public static final int BGND_NUM_PROPERTIES = 4;
+    public static final int BGND_ID = 1;
+    public static final int BGND_COL = 2;
+    public static final int BGND_ROW = 3;
+
+    public static final String SMITH_KEY = "blacksmith";
+    public static final int SMITH_NUM_PROPERTIES = 4;
+    public static final int SMITH_ID = 1;
+    public static final int SMITH_COL = 2;
+    public static final int SMITH_ROW = 3;
 
     public static final String OBSTACLE_KEY = "obstacle";
     public static final int OBSTACLE_NUM_PROPERTIES = 4;
@@ -64,12 +67,6 @@ public final class Functions {
     public static final int ORE_COL = 2;
     public static final int ORE_ROW = 3;
     public static final int ORE_ACTION_PERIOD = 4;
-
-    public static final String SMITH_KEY = "blacksmith";
-    public static final int SMITH_NUM_PROPERTIES = 4;
-    public static final int SMITH_ID = 1;
-    public static final int SMITH_COL = 2;
-    public static final int SMITH_ROW = 3;
 
     public static final String VEIN_KEY = "vein";
     public static final int VEIN_NUM_PROPERTIES = 5;
@@ -93,7 +90,7 @@ public final class Functions {
         }
     }
 
-    private static void processImageLine( // leave for later
+    private static void processImageLine(
                                          Map<String, List<PImage>> images, String line, PApplet screen) {
         String[] attrs = line.split("\\s");
         if (attrs.length >= 2) {
@@ -113,7 +110,7 @@ public final class Functions {
         }
     }
 
-    private static List<PImage> getImages( // leave for later
+    private static List<PImage> getImages(
                                           Map<String, List<PImage>> images, String key) {
         List<PImage> imgs = images.get(key);
         if (imgs == null) {
@@ -127,7 +124,7 @@ public final class Functions {
       Called with color for which alpha should be set and alpha value.
       setAlpha(img, color(255, 255, 255), 0));
     */
-    private static void setAlpha(PImage img, int maskColor, int alpha) { // leave for later
+    private static void setAlpha(PImage img, int maskColor, int alpha) {
         int alphaValue = alpha << 24;
         int nonAlpha = maskColor & COLOR_MASK;
         img.format = PApplet.ARGB;
@@ -162,11 +159,11 @@ public final class Functions {
         }
     }
 
-    private static boolean processLine( // leave for later
+    private static boolean processLine(
                                        String line, WorldModel world, ImageStore imageStore) {
         String[] properties = line.split("\\s");
         if (properties.length > 0) {
-            switch (properties[PROPERTY_KEY]) {
+            switch (properties[0]) {
                 case BGND_KEY:
                     return parseBackground(properties, world, imageStore);
                 case MINER_KEY:
@@ -184,22 +181,8 @@ public final class Functions {
 
         return false;
     }
-
-    public static boolean parseBackground( // later
-                                           String[] properties, WorldModel world, ImageStore imageStore) {
-        if (properties.length == BGND_NUM_PROPERTIES) {
-            Point pt = new Point(Integer.parseInt(properties[BGND_COL]),
-                    Integer.parseInt(properties[BGND_ROW]));
-            String id = properties[BGND_ID];
-            world.setBackground(pt,
-                    new Background(id, imageStore.getImageList(id)));
-        }
-
-        return properties.length == BGND_NUM_PROPERTIES;
-    }
-
     public static boolean parseMiner( // later
-                                      String[] properties, WorldModel world, ImageStore imageStore) {
+                                 String[] properties, WorldModel world, ImageStore imageStore) {
         if (properties.length == MINER_NUM_PROPERTIES) {
             Point pt = new Point(Integer.parseInt(properties[MINER_COL]),
                     Integer.parseInt(properties[MINER_ROW]));
@@ -217,8 +200,36 @@ public final class Functions {
         return properties.length == MINER_NUM_PROPERTIES;
     }
 
+    public static boolean parseBackground( // later
+                                 String[] properties, WorldModel world, ImageStore imageStore) {
+        if (properties.length == BGND_NUM_PROPERTIES) {
+            Point pt = new Point(Integer.parseInt(properties[BGND_COL]),
+                    Integer.parseInt(properties[BGND_ROW]));
+            String id = properties[BGND_ID];
+            world.setBackground(pt,
+                    new Background(id, imageStore.getImageList(id)));
+        }
+
+        return properties.length == 4;
+    }
+
+
+    public static boolean parseSmith( // later
+                                 String[] properties, WorldModel world, ImageStore imageStore) {
+        if (properties.length == SMITH_NUM_PROPERTIES) {
+            Point pt = new Point(Integer.parseInt(properties[SMITH_COL]),
+                    Integer.parseInt(properties[SMITH_ROW]));
+            Blacksmith entity = Factory.createBlacksmith(properties[SMITH_ID], pt,
+                    imageStore.getImageList(
+                            SMITH_KEY));
+            world.tryAddEntity(entity);
+        }
+
+        return properties.length == SMITH_NUM_PROPERTIES;
+    }
+
     public static boolean parseObstacle( // later
-                                         String[] properties, WorldModel world, ImageStore imageStore) {
+                                 String[] properties, WorldModel world, ImageStore imageStore) {
         if (properties.length == OBSTACLE_NUM_PROPERTIES) {
             Point pt = new Point(Integer.parseInt(properties[OBSTACLE_COL]),
                     Integer.parseInt(properties[OBSTACLE_ROW]));
@@ -232,7 +243,7 @@ public final class Functions {
     }
 
     public static boolean parseOre( // later
-                                    String[] properties, WorldModel world, ImageStore imageStore) {
+                                 String[] properties, WorldModel world, ImageStore imageStore) {
         if (properties.length == ORE_NUM_PROPERTIES) {
             Point pt = new Point(Integer.parseInt(properties[ORE_COL]),
                     Integer.parseInt(properties[ORE_ROW]));
@@ -245,23 +256,9 @@ public final class Functions {
         return properties.length == ORE_NUM_PROPERTIES;
     }
 
-    public static boolean parseSmith( // later
-                                      String[] properties, WorldModel world, ImageStore imageStore) {
-        if (properties.length == SMITH_NUM_PROPERTIES) {
-            Point pt = new Point(Integer.parseInt(properties[SMITH_COL]),
-                    Integer.parseInt(properties[SMITH_ROW]));
-            Blacksmith entity = Factory.createBlacksmith(properties[SMITH_ID], pt,
-                    imageStore.getImageList(
-                            SMITH_KEY));
-            world.tryAddEntity(entity);
-        }
-
-        return properties.length == SMITH_NUM_PROPERTIES;
-    }
-
     public static boolean parseVein( // later
-                                     String[] properties, WorldModel world, ImageStore imageStore) {
-        if (properties.length == VEIN_NUM_PROPERTIES) {
+                                 String[] properties, WorldModel world, ImageStore imageStore) {
+        if (properties.length ==  VEIN_NUM_PROPERTIES) {
             Point pt = new Point(Integer.parseInt(properties[VEIN_COL]),
                     Integer.parseInt(properties[VEIN_ROW]));
             Vein entity = Factory.createVein(properties[VEIN_ID], pt,
@@ -271,7 +268,7 @@ public final class Functions {
             world.tryAddEntity(entity);
         }
 
-        return properties.length == VEIN_NUM_PROPERTIES;
+        return properties.length ==  VEIN_NUM_PROPERTIES;
     }
 
 }

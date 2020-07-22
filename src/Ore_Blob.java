@@ -8,8 +8,6 @@ public class Ore_Blob implements Entity, ActionEntity{
     private Point position;
     private final List<PImage> images;
     private int imageIndex;
-    private final int resourceLimit;
-    private int resourceCount;
     private final int actionPeriod;
     private final int animationPeriod;
 
@@ -17,8 +15,6 @@ public class Ore_Blob implements Entity, ActionEntity{
             String id,
             Point position,
             List<PImage> images,
-            int resourceLimit,
-            int resourceCount,
             int actionPeriod,
             int animationPeriod)
     {
@@ -26,8 +22,6 @@ public class Ore_Blob implements Entity, ActionEntity{
         this.position = position;
         this.images = images;
         this.imageIndex = 0;
-        this.resourceLimit = resourceLimit;
-        this.resourceCount = resourceCount;
         this.actionPeriod = actionPeriod;
         this.animationPeriod = animationPeriod;
     }
@@ -133,7 +127,7 @@ public class Ore_Blob implements Entity, ActionEntity{
     }
 
     public Action createAnimationAction(int repeatCount) {
-        return new Animation(this, null, null,
+        return new Animation(this,
                 repeatCount);
     }
 

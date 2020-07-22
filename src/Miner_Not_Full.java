@@ -145,7 +145,7 @@ public class Miner_Not_Full implements Entity, ActionEntity{
     }
 
     public Action createAnimationAction(int repeatCount) {
-        return new Animation(this, null, null,
+        return new Animation(this,
                 repeatCount);
     }
 
@@ -165,4 +165,6 @@ public class Miner_Not_Full implements Entity, ActionEntity{
     public void setPosition(Point position) {
         this.position = position;
     }
+
+
 }

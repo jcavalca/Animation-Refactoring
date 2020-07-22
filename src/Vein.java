@@ -8,8 +8,6 @@ public class Vein implements Entity, ActionEntity{
     private Point position;
     private final List<PImage> images;
     private int imageIndex;
-    private final int resourceLimit;
-    private int resourceCount;
     private final int actionPeriod;
     private final int animationPeriod;
 
@@ -17,8 +15,6 @@ public class Vein implements Entity, ActionEntity{
             String id,
             Point position,
             List<PImage> images,
-            int resourceLimit,
-            int resourceCount,
             int actionPeriod,
             int animationPeriod)
     {
@@ -26,8 +22,6 @@ public class Vein implements Entity, ActionEntity{
         this.position = position;
         this.images = images;
         this.imageIndex = 0;
-        this.resourceLimit = resourceLimit;
-        this.resourceCount = resourceCount;
         this.actionPeriod = actionPeriod;
         this.animationPeriod = animationPeriod;
     }
@@ -55,7 +49,7 @@ public class Vein implements Entity, ActionEntity{
             Ore ore = Factory.createOre(Functions.ORE_ID_PREFIX + this.id, openPt.get(),
                     Functions.ORE_CORRUPT_MIN + Functions.rand.nextInt(
                             Functions.ORE_CORRUPT_MAX - Functions.ORE_CORRUPT_MIN),
-                    imageStore.getImageList(Functions.ORE_KEY));
+                    imageStore.getImageList("ore"));
             world.addEntity(ore);
             ore.scheduleActions(scheduler, world, imageStore);
         }
@@ -76,7 +70,7 @@ public class Vein implements Entity, ActionEntity{
     }
 
     public Action createAnimationAction(int repeatCount) {
-        return new Animation(this, null, null,
+        return new Animation(this,
                 repeatCount);
     }
 
@@ -94,4 +88,6 @@ public class Vein implements Entity, ActionEntity{
     public void setPosition(Point position) {
         this.position = position;
     }
+
+
 }

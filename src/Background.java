@@ -28,5 +28,6 @@ public final class Background
     public PImage getCurrentImage() {
             return this.getImages().get(this.getImageIndex());
         }
-    }
+}
+
 

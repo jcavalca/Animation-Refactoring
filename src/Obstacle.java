@@ -3,32 +3,22 @@ import java.util.Optional;
 
 import processing.core.PImage;
 
-public class Obstacle implements Entity{
+public class Obstacle implements Entity {
     private final String id;
     private Point position;
     private final List<PImage> images;
     private int imageIndex;
-    private final int resourceLimit;
-    private int resourceCount;
-    private final int actionPeriod;
     private final int animationPeriod;
 
     public Obstacle(
             String id,
             Point position,
             List<PImage> images,
-            int resourceLimit,
-            int resourceCount,
-            int actionPeriod,
-            int animationPeriod)
-    {
+            int animationPeriod) {
         this.id = id;
         this.position = position;
         this.images = images;
         this.imageIndex = 0;
-        this.resourceLimit = resourceLimit;
-        this.resourceCount = resourceCount;
-        this.actionPeriod = actionPeriod;
         this.animationPeriod = animationPeriod;
     }
 
@@ -47,8 +37,7 @@ public class Obstacle implements Entity{
     public void scheduleActions(
             EventScheduler scheduler,
             WorldModel world,
-            ImageStore imageStore)
-    {
+            ImageStore imageStore) {
     }
 
 
