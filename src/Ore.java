@@ -78,7 +78,7 @@ public class Ore implements Entity, ActionEntity{
     public Action createActivityAction(
             WorldModel world, ImageStore imageStore)
     {
-        return new Activity( this, world, imageStore, 0);
+        return new Activity( this, world, imageStore);
     }
 
     public Point getPosition() {

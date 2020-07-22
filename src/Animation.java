@@ -1,7 +1,5 @@
 public class Animation implements Action{
     private final ActionEntity entity;
-    //private final WorldModel world;
-    //private final ImageStore imageStore;
     private final int repeatCount;
 
     public Animation(

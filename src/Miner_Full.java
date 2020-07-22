@@ -3,7 +3,7 @@ import java.util.Optional;
 
 import processing.core.PImage;
 
-public class Miner_Full implements Entity, ActionEntity {
+public class Miner_Full implements Entity, ActionEntity, Miner{
 
     private final String id;
     private Point position;
@@ -48,7 +48,7 @@ public class Miner_Full implements Entity, ActionEntity {
         Optional<Entity> fullTarget =
                 world.findNearest(this.position, Blacksmith.class);
 
-        if (fullTarget.isPresent() && this.moveToFull(world,
+        if (fullTarget.isPresent() && this.move(world,
                 fullTarget.get(), scheduler)) {
             transformFull(world, scheduler, imageStore);
         } else {
@@ -86,7 +86,7 @@ public class Miner_Full implements Entity, ActionEntity {
         miner.scheduleActions(scheduler, world, imageStore);
     }
 
-    private boolean moveToFull(
+    public boolean move(
             WorldModel world,
             Entity target,
             EventScheduler scheduler) {
@@ -107,7 +107,7 @@ public class Miner_Full implements Entity, ActionEntity {
         }
     }
 
-    private Point nextPositionMiner(
+    public Point nextPositionMiner(
             WorldModel world, Point destPos) {
         int horiz = Integer.signum(destPos.x - this.position.x);
         Point newPos = new Point(this.position.x + horiz, this.position.y);
@@ -131,7 +131,7 @@ public class Miner_Full implements Entity, ActionEntity {
 
     public Action createActivityAction(
             WorldModel world, ImageStore imageStore) {
-        return new Activity(this, world, imageStore, 0);
+        return new Activity(this, world, imageStore);
     }
 
     // Getters and Setters Created!!
