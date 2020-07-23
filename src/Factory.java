@@ -8,7 +8,7 @@ public class Factory {
     public static Blacksmith createBlacksmith(
             String id, Point position, List<PImage> images)
     {
-        return new Blacksmith(id, position, images, 0, 0, 0,
+        return new Blacksmith(id, position, images,
                 0);
     }
 

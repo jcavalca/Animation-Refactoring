@@ -14,9 +14,6 @@ public class Blacksmith implements Entity{
             String id,
             Point position,
             List<PImage> images,
-            int resourceLimit,
-            int resourceCount,
-            int actionPeriod,
             int animationPeriod)
     {
         this.id = id;
