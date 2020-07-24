@@ -8,4 +8,9 @@ public interface ActionEntity extends Entity{
 
     Action createAnimationAction(int repeatCount);
 
+        void scheduleActions(
+            EventScheduler scheduler,
+            WorldModel world,
+            ImageStore imageStore);
+
 }

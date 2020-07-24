@@ -34,11 +34,11 @@ public class Obstacle implements Entity {
         imageIndex = (imageIndex + 1) % images.size();
     }
 
-    public void scheduleActions(
-            EventScheduler scheduler,
-            WorldModel world,
-            ImageStore imageStore) {
-    }
+//    public void scheduleActions(
+//            EventScheduler scheduler,
+//            WorldModel world,
+//            ImageStore imageStore) {
+//    }
 
 
     public Point getPosition() {

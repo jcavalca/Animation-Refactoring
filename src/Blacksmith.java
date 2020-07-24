@@ -34,15 +34,6 @@ public class Blacksmith implements Entity{
         imageIndex = (imageIndex + 1) % images.size();
     }
 
-    // Do nothing as default
-    public void scheduleActions(
-            EventScheduler scheduler,
-            WorldModel world,
-            ImageStore imageStore)
-    {
-    }
-
-
     public Point getPosition() {
         return position;
     }
