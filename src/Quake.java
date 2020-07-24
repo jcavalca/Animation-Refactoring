@@ -3,7 +3,7 @@ import java.util.Optional;
 
 import processing.core.PImage;
 
-public class Quake implements Entity, ActionEntity{
+public class Quake implements Entity, ActionEntity, AnimPeriod{
     private final String id;
     private Point position;
     private final List<PImage> images;

@@ -9,29 +9,23 @@ public class Ore implements Entity, ActionEntity{
     private final List<PImage> images;
     private int imageIndex;
     private final int actionPeriod;
-    private final int animationPeriod;
 
     public Ore(
             String id,
             Point position,
             List<PImage> images,
-            int actionPeriod,
-            int animationPeriod)
+            int actionPeriod)
+
     {
         this.id = id;
         this.position = position;
         this.images = images;
         this.imageIndex = 0;
         this.actionPeriod = actionPeriod;
-        this.animationPeriod = animationPeriod;
     }
 
     public PImage getCurrentImage() {
         return this.images.get(this.imageIndex);
-    }
-
-    public int getAnimationPeriod() {
-        return animationPeriod;
     }
 
     public void nextImage() {

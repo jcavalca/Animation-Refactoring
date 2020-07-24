@@ -8,8 +8,8 @@ public class Factory {
     public static Blacksmith createBlacksmith(
             String id, Point position, List<PImage> images)
     {
-        return new Blacksmith(id, position, images,
-                0);
+        return new Blacksmith(id, position, images
+                );
     }
 
     public static Miner_Full createMinerFull(
@@ -40,15 +40,14 @@ public class Factory {
     public static Obstacle createObstacle(
             String id, Point position, List<PImage> images)
     {
-        return new Obstacle(id, position, images,
-                0);
+        return new Obstacle(id, position, images);
     }
 
     public static Ore createOre(
             String id, Point position, int actionPeriod, List<PImage> images)
     {
         return new Ore(id, position, images,
-                actionPeriod, 0);
+                actionPeriod);
     }
 
     public static Ore_Blob createOreBlob(
@@ -73,6 +72,6 @@ public class Factory {
             String id, Point position, int actionPeriod, List<PImage> images)
     {
         return new Vein(id, position, images,
-                actionPeriod, 0);
+                actionPeriod);
     }
 }

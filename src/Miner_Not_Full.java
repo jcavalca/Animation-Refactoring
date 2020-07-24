@@ -3,7 +3,7 @@ import java.util.Optional;
 
 import processing.core.PImage;
 
-public class Miner_Not_Full implements Entity, ActionEntity, Miner{
+public class Miner_Not_Full implements Entity, ActionEntity, AnimPeriod, Miner{
     private final String id;
     private Point position;
     private final List<PImage> images;

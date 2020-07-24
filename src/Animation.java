@@ -20,7 +20,7 @@ public class Animation implements Action{
                     entity.createAnimationAction(
                             Math.max(repeatCount - 1,
                                     0)),
-                    entity.getAnimationPeriod());
+                    ((AnimPeriod)entity).getAnimationPeriod());
         }
     }
 

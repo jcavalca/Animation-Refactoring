@@ -13,4 +13,6 @@ public interface ActionEntity extends Entity{
             WorldModel world,
             ImageStore imageStore);
 
+    void nextImage();
+    void setPosition(Point position);
 }
