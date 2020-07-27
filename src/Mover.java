@@ -1,10 +1,10 @@
-public interface Miner extends Entity, ActionEntity{
+public interface Mover extends Entity, ActionEntity{
 
     boolean move(WorldModel world,
                  Entity target,
                  EventScheduler scheduler);
 
-    Point nextPositionMiner(
+    Point nextPosition(
             WorldModel world, Point destPos);
 
 }

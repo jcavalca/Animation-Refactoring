@@ -3,7 +3,7 @@ import java.util.Optional;
 
 import processing.core.PImage;
 
-public class Miner_Not_Full implements Entity, ActionEntity, AnimPeriod, Miner{
+public class Miner_Not_Full implements Entity, ActionEntity, AnimPeriod, Mover{
     private final String id;
     private Point position;
     private final List<PImage> images;
@@ -112,7 +112,7 @@ public class Miner_Not_Full implements Entity, ActionEntity, AnimPeriod, Miner{
             return true;
         }
         else {
-            Point nextPos = this.nextPositionMiner(world, target.getPosition());
+            Point nextPos = this.nextPosition(world, target.getPosition());
 
             if (!this.position.equals(nextPos)) {
                 Optional<Entity> occupant = world.getOccupant(nextPos);
@@ -126,7 +126,7 @@ public class Miner_Not_Full implements Entity, ActionEntity, AnimPeriod, Miner{
         }
     }
 
-    public Point nextPositionMiner(
+    public Point nextPosition(
             WorldModel world, Point destPos)
     {
         int horiz = Integer.signum(destPos.x - this.position.x);

@@ -3,7 +3,7 @@ import java.util.Optional;
 
 import processing.core.PImage;
 
-public class Ore_Blob implements Entity, ActionEntity, AnimPeriod{
+public class Ore_Blob implements Entity, ActionEntity, AnimPeriod, Mover{
     private final String id;
     private Point position;
     private final List<PImage> images;
@@ -50,7 +50,7 @@ public class Ore_Blob implements Entity, ActionEntity, AnimPeriod{
         if (blobTarget.isPresent()) {
             Point tgtPos = blobTarget.get().getPosition();
 
-            if (this.moveToOreBlob(world, blobTarget.get(), scheduler)) {
+            if (this.move(world, blobTarget.get(), scheduler)) {
                 Quake quake = Factory.createQuake(tgtPos,
                         imageStore.getImageList(Functions.QUAKE_KEY));
 
@@ -78,7 +78,7 @@ public class Ore_Blob implements Entity, ActionEntity, AnimPeriod{
                 this.getAnimationPeriod());
     }
 
-    private boolean moveToOreBlob(
+    public boolean move(
             WorldModel world,
             Entity target,
             EventScheduler scheduler)
@@ -89,7 +89,7 @@ public class Ore_Blob implements Entity, ActionEntity, AnimPeriod{
             return true;
         }
         else {
-            Point nextPos = this.nextPositionOreBlob(world, target.getPosition());
+            Point nextPos = this.nextPosition(world, target.getPosition());
 
             if (!this.position.equals(nextPos)) {
                 Optional<Entity> occupant = world.getOccupant(nextPos);
@@ -103,7 +103,7 @@ public class Ore_Blob implements Entity, ActionEntity, AnimPeriod{
         }
     }
 
-    private Point nextPositionOreBlob(
+    public Point nextPosition(
             WorldModel world, Point destPos)
     {
         int horiz = Integer.signum(destPos.x - this.position.x);
