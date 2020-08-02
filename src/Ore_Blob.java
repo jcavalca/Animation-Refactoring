@@ -3,46 +3,22 @@ import java.util.Optional;
 
 import processing.core.PImage;
 
-public class Ore_Blob implements Entity, ActionEntity, AnimPeriod, Mover{
-    private final String id;
-    private Point position;
-    private final List<PImage> images;
-    private int imageIndex;
-    private final int actionPeriod;
-    private final int animationPeriod;
+public class Ore_Blob extends MoverEntity {
 
     public Ore_Blob(
             String id,
             Point position,
             List<PImage> images,
             int actionPeriod,
-            int animationPeriod)
-    {
-        this.id = id;
-        this.position = position;
-        this.images = images;
-        this.imageIndex = 0;
-        this.actionPeriod = actionPeriod;
-        this.animationPeriod = animationPeriod;
+            int animationPeriod) {
+        super(id, position, images, actionPeriod, animationPeriod);
     }
 
-    public PImage getCurrentImage() {
-        return this.images.get(this.imageIndex);
-    }
-
-    public int getAnimationPeriod() {
-                return animationPeriod;
-    }
-
-    public void nextImage() {
-        imageIndex = (imageIndex + 1) % images.size();
-    }
 
     public void executeActivity(
             WorldModel world,
             ImageStore imageStore,
-            EventScheduler scheduler)
-    {
+            EventScheduler scheduler) {
         Optional<Entity> blobTarget =
                 world.findNearest(this.position, Vein.class);
         long nextPeriod = this.actionPeriod;
@@ -65,30 +41,15 @@ public class Ore_Blob implements Entity, ActionEntity, AnimPeriod, Mover{
                 nextPeriod);
     }
 
-    public void scheduleActions(
-            EventScheduler scheduler,
-            WorldModel world,
-            ImageStore imageStore)
-    {
-        scheduler.scheduleEvent(this,
-                this.createActivityAction(world, imageStore),
-                this.actionPeriod);
-        scheduler.scheduleEvent(this,
-                this.createAnimationAction(0),
-                this.getAnimationPeriod());
-    }
-
     public boolean move(
             WorldModel world,
             Entity target,
-            EventScheduler scheduler)
-    {
+            EventScheduler scheduler) {
         if (this.position.adjacent(target.getPosition())) {
             world.removeEntity(target);
             scheduler.unscheduleAllEvents(target);
             return true;
-        }
-        else {
+        } else {
             Point nextPos = this.nextPosition(world, target.getPosition());
 
             if (!this.position.equals(nextPos)) {
@@ -101,48 +62,5 @@ public class Ore_Blob implements Entity, ActionEntity, AnimPeriod, Mover{
             }
             return false;
         }
-    }
-
-    public Point nextPosition(
-            WorldModel world, Point destPos)
-    {
-        int horiz = Integer.signum(destPos.x - this.position.x);
-        Point newPos = new Point(this.position.x + horiz, this.position.y);
-
-        Optional<Entity> occupant = world.getOccupant(newPos);
-
-        if (horiz == 0 || (occupant.isPresent() && !(occupant.get() instanceof Ore)))
-        {
-            int vert = Integer.signum(destPos.y - this.position.y);
-            newPos = new Point(this.position.x, this.position.y + vert);
-            occupant = world.getOccupant(newPos);
-
-            if (vert == 0 || (occupant.isPresent() && !(occupant.get() instanceof Ore)))
-            {
-                newPos = this.position;
-            }
-        }
-
-        return newPos;
-    }
-
-    public Action createAnimationAction(int repeatCount) {
-        return new Animation(this,
-                repeatCount);
-    }
-
-    public Action createActivityAction(
-            WorldModel world, ImageStore imageStore)
-    {
-        return new Activity( this, world, imageStore);
-    }
-
-
-    public Point getPosition() {
-        return position;
-    }
-
-    public void setPosition(Point position) {
-        this.position = position;
     }
 }

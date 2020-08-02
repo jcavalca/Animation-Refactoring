@@ -1,26 +1,26 @@
-public class Animation implements Action{
-    private final ActionEntity entity;
+public class Animation extends Action{
+
     private final int repeatCount;
 
     public Animation(
             ActionEntity entity,
             int repeatCount)
     {
-        this.entity = entity;
+        super(entity);
         this.repeatCount = repeatCount;
     }
 
     public void executeAction(
             EventScheduler scheduler)
     {
-        entity.nextImage();
+        ((AnimEntity)entity).nextImage();
 
         if (repeatCount != 1) {
             scheduler.scheduleEvent(entity,
-                    entity.createAnimationAction(
+                    ((AnimEntity)entity).createAnimationAction(
                             Math.max(repeatCount - 1,
                                     0)),
-                    ((AnimPeriod)entity).getAnimationPeriod());
+                    ((AnimEntity)entity).getAnimationPeriod());
         }
     }
 

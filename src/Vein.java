@@ -3,32 +3,14 @@ import java.util.Optional;
 
 import processing.core.PImage;
 
-public class Vein implements Entity, ActionEntity{
-    private final String id;
-    private Point position;
-    private final List<PImage> images;
-    private int imageIndex;
-    private final int actionPeriod;
-
+public class Vein extends ActionEntity{
     public Vein(
             String id,
             Point position,
             List<PImage> images,
             int actionPeriod)
     {
-        this.id = id;
-        this.position = position;
-        this.images = images;
-        this.imageIndex = 0;
-        this.actionPeriod = actionPeriod;
-    }
-
-    public PImage getCurrentImage() {
-        return this.images.get(this.imageIndex);
-    }
-
-    public void nextImage() {
-        imageIndex = (imageIndex + 1) % images.size();
+        super(id, position, images, actionPeriod);
     }
 
     public void executeActivity(
@@ -51,36 +33,5 @@ public class Vein implements Entity, ActionEntity{
                 this.createActivityAction(world, imageStore),
                 this.actionPeriod);
     }
-
-    public void scheduleActions(
-            EventScheduler scheduler,
-            WorldModel world,
-            ImageStore imageStore)
-    {
-        scheduler.scheduleEvent(this,
-                this.createActivityAction(world, imageStore),
-                this.actionPeriod);
-    }
-
-    public Action createAnimationAction(int repeatCount) {
-        return new Animation(this,
-                repeatCount);
-    }
-
-    public Action createActivityAction(
-            WorldModel world, ImageStore imageStore)
-    {
-        return new Activity( this, world, imageStore);
-    }
-
-
-    public Point getPosition() {
-        return position;
-    }
-
-    public void setPosition(Point position) {
-        this.position = position;
-    }
-
 
 }

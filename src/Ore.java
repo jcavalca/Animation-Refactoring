@@ -3,13 +3,7 @@ import java.util.Optional;
 
 import processing.core.PImage;
 
-public class Ore implements Entity, ActionEntity{
-    private final String id;
-    private Point position;
-    private final List<PImage> images;
-    private int imageIndex;
-    private final int actionPeriod;
-
+public class Ore extends ActionEntity{
     public Ore(
             String id,
             Point position,
@@ -17,19 +11,7 @@ public class Ore implements Entity, ActionEntity{
             int actionPeriod)
 
     {
-        this.id = id;
-        this.position = position;
-        this.images = images;
-        this.imageIndex = 0;
-        this.actionPeriod = actionPeriod;
-    }
-
-    public PImage getCurrentImage() {
-        return this.images.get(this.imageIndex);
-    }
-
-    public void nextImage() {
-        imageIndex = (imageIndex + 1) % images.size();
+        super(id, position, images, actionPeriod);
     }
 
     public void executeActivity(
@@ -51,36 +33,6 @@ public class Ore implements Entity, ActionEntity{
 
         world.addEntity(blob);
         blob.scheduleActions(scheduler, world, imageStore);
-    }
-
-    public void scheduleActions(
-            EventScheduler scheduler,
-            WorldModel world,
-            ImageStore imageStore)
-    {
-                scheduler.scheduleEvent(this,
-                        this.createActivityAction(world, imageStore),
-                        this.actionPeriod);
-
-    }
-
-    public Action createAnimationAction(int repeatCount) {
-        return new Animation(this,
-                repeatCount);
-    }
-
-    public Action createActivityAction(
-            WorldModel world, ImageStore imageStore)
-    {
-        return new Activity( this, world, imageStore);
-    }
-
-    public Point getPosition() {
-        return position;
-    }
-
-    public void setPosition(Point position) {
-        this.position = position;
     }
 
 }

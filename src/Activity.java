@@ -1,6 +1,5 @@
-public class Activity implements Action{
+public class Activity extends Action{
 
-    private final ActionEntity entity;
     private final WorldModel world;
     private final ImageStore imageStore;
 
@@ -9,7 +8,7 @@ public class Activity implements Action{
             WorldModel world,
             ImageStore imageStore)
     {
-        this.entity = entity;
+        super(entity);
         this.world = world;
         this.imageStore = imageStore;
     }
