@@ -4,10 +4,10 @@ import java.util.List;
 
 public abstract class Entity {
 
-    protected final String id;
-    protected Point position;
-    protected final List<PImage> images;
-    protected int imageIndex;
+    private final String id;
+    private Point position;
+    private final List<PImage> images;
+    private int imageIndex;
 
     public Entity(String id,
                         Point position,
@@ -17,12 +17,31 @@ public abstract class Entity {
         this.images = images;
     }
 
-    public PImage getCurrentImage() {
+    protected PImage getCurrentImage() {
         return this.images.get(this.imageIndex);
     }
 
-    public Point getPosition() {
+    protected Point getPosition() {
         return position;
     }
 
+    protected void setPosition(Point point){
+        this.position = point;
+    }
+
+    protected int getImageIndex(){
+        return imageIndex;
+    }
+
+    protected void setImageIndex(int newIndex){
+        this.imageIndex = newIndex;
+    }
+
+    protected List<PImage> getImages(){
+        return images;
+    }
+
+    protected String getId(){
+        return id;
+    }
 }

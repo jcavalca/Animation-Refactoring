@@ -18,12 +18,12 @@ public class Miner_Full extends MoverEntity {
         this.resourceLimit = resourceLimit;
     }
 
-    public void executeActivity(
+    protected void executeActivity(
             WorldModel world,
             ImageStore imageStore,
             EventScheduler scheduler) {
         Optional<Entity> fullTarget =
-                world.findNearest(this.position, Blacksmith.class);
+                world.findNearest(this.getPosition(), Blacksmith.class);
 
         if (fullTarget.isPresent() && this.move(world,
                 fullTarget.get(), scheduler)) {
@@ -31,7 +31,7 @@ public class Miner_Full extends MoverEntity {
         } else {
             scheduler.scheduleEvent(this,
                     this.createActivityAction(world, imageStore),
-                    this.actionPeriod);
+                    this.getActionPeriod());
         }
     }
 
@@ -39,10 +39,10 @@ public class Miner_Full extends MoverEntity {
             WorldModel world,
             EventScheduler scheduler,
             ImageStore imageStore) {
-        Miner_Not_Full miner = Factory.createMinerNotFull(this.id, this.resourceLimit,
-                this.position, this.actionPeriod,
-                this.animationPeriod,
-                this.images);
+        Miner_Not_Full miner = Factory.createMinerNotFull(this.getId(), this.resourceLimit,
+                this.getPosition(), this.getActionPeriod(),
+                this.getAnimationPeriod(),
+                this.getImages());
 
         world.removeEntity(this);
         scheduler.unscheduleAllEvents(this);
@@ -51,16 +51,16 @@ public class Miner_Full extends MoverEntity {
         miner.scheduleActions(scheduler, world, imageStore);
     }
 
-    public boolean move(
+    protected boolean move(
             WorldModel world,
             Entity target,
             EventScheduler scheduler) {
-        if (this.position.adjacent(target.getPosition())) {
+        if (this.getPosition().adjacent(target.getPosition())) {
             return true;
         } else {
             Point nextPos = this.nextPosition(world, target.getPosition());
 
-            if (!this.position.equals(nextPos)) {
+            if (!this.getPosition().equals(nextPos)) {
                 Optional<Entity> occupant = world.getOccupant(nextPos);
                 if (occupant.isPresent()) {
                     scheduler.unscheduleAllEvents(occupant.get());

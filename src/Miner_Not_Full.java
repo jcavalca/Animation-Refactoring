@@ -22,13 +22,13 @@ public class Miner_Not_Full extends MoverEntity {
         this.resourceCount = resourceCount;
     }
 
-    public void executeActivity(
+    protected void executeActivity(
             WorldModel world,
             ImageStore imageStore,
             EventScheduler scheduler)
     {
         Optional<Entity> notFullTarget =
-                world.findNearest(this.position, Ore.class);
+                world.findNearest(this.getPosition(), Ore.class);
 
         if (!notFullTarget.isPresent() || !this.move(world,
                 notFullTarget.get(),
@@ -37,7 +37,7 @@ public class Miner_Not_Full extends MoverEntity {
         {
             scheduler.scheduleEvent(this,
                     this.createActivityAction(world, imageStore),
-                    this.actionPeriod);
+                    this.getActionPeriod());
         }
     }
 
@@ -47,10 +47,10 @@ public class Miner_Not_Full extends MoverEntity {
             ImageStore imageStore)
     {
         if (this.resourceCount >= this.resourceLimit) {
-            Miner_Full miner = Factory.createMinerFull(this.id, this.resourceLimit,
-                    this.position, this.actionPeriod,
-                    this.animationPeriod,
-                    this.images);
+            Miner_Full miner = Factory.createMinerFull(this.getId(), this.resourceLimit,
+                    this.getPosition(), this.getActionPeriod(),
+                    this.getAnimationPeriod(),
+                    this.getImages());
 
             world.removeEntity(this);
             scheduler.unscheduleAllEvents(this);
@@ -64,12 +64,12 @@ public class Miner_Not_Full extends MoverEntity {
         return false;
     }
 
-    public boolean move(
+    protected boolean move(
             WorldModel world,
             Entity target,
             EventScheduler scheduler)
     {
-        if (this.position.adjacent(target.getPosition())) {
+        if (this.getPosition().adjacent(target.getPosition())) {
             this.resourceCount += 1;
             world.removeEntity(target);
             scheduler.unscheduleAllEvents(target);
@@ -79,7 +79,7 @@ public class Miner_Not_Full extends MoverEntity {
         else {
             Point nextPos = this.nextPosition(world, target.getPosition());
 
-            if (!this.position.equals(nextPos)) {
+            if (!this.getPosition().equals(nextPos)) {
                 Optional<Entity> occupant = world.getOccupant(nextPos);
                 if (occupant.isPresent()) {
                     scheduler.unscheduleAllEvents(occupant.get());

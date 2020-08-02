@@ -15,13 +15,13 @@ public class Ore_Blob extends MoverEntity {
     }
 
 
-    public void executeActivity(
+    protected void executeActivity(
             WorldModel world,
             ImageStore imageStore,
             EventScheduler scheduler) {
         Optional<Entity> blobTarget =
-                world.findNearest(this.position, Vein.class);
-        long nextPeriod = this.actionPeriod;
+                world.findNearest(this.getPosition(), Vein.class);
+        long nextPeriod = this.getActionPeriod();
 
         if (blobTarget.isPresent()) {
             Point tgtPos = blobTarget.get().getPosition();
@@ -31,7 +31,7 @@ public class Ore_Blob extends MoverEntity {
                         imageStore.getImageList(Functions.QUAKE_KEY));
 
                 world.addEntity(quake);
-                nextPeriod += this.actionPeriod;
+                nextPeriod += this.getActionPeriod();
                 quake.scheduleActions(scheduler, world, imageStore);
             }
         }
@@ -41,18 +41,18 @@ public class Ore_Blob extends MoverEntity {
                 nextPeriod);
     }
 
-    public boolean move(
+    protected boolean move(
             WorldModel world,
             Entity target,
             EventScheduler scheduler) {
-        if (this.position.adjacent(target.getPosition())) {
+        if (this.getPosition().adjacent(target.getPosition())) {
             world.removeEntity(target);
             scheduler.unscheduleAllEvents(target);
             return true;
         } else {
             Point nextPos = this.nextPosition(world, target.getPosition());
 
-            if (!this.position.equals(nextPos)) {
+            if (!this.getPosition().equals(nextPos)) {
                 Optional<Entity> occupant = world.getOccupant(nextPos);
                 if (occupant.isPresent()) {
                     scheduler.unscheduleAllEvents(occupant.get());

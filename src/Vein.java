@@ -18,10 +18,10 @@ public class Vein extends ActionEntity{
             ImageStore imageStore,
             EventScheduler scheduler)
     {
-        Optional<Point> openPt = world.findOpenAround(this.position);
+        Optional<Point> openPt = world.findOpenAround(this.getPosition());
 
         if (openPt.isPresent()) {
-            Ore ore = Factory.createOre(Functions.ORE_ID_PREFIX + this.id, openPt.get(),
+            Ore ore = Factory.createOre(Functions.ORE_ID_PREFIX + this.getId(), openPt.get(),
                     Functions.ORE_CORRUPT_MIN + Functions.rand.nextInt(
                             Functions.ORE_CORRUPT_MAX - Functions.ORE_CORRUPT_MIN),
                     imageStore.getImageList("ore"));
@@ -31,7 +31,7 @@ public class Vein extends ActionEntity{
 
         scheduler.scheduleEvent(this,
                 this.createActivityAction(world, imageStore),
-                this.actionPeriod);
+                this.getActionPeriod());
     }
 
 }

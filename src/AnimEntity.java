@@ -4,7 +4,7 @@ import java.util.List;
 
 public abstract class AnimEntity extends ActionEntity{
 
-    protected final int animationPeriod;
+    private final int animationPeriod;
 
     public AnimEntity(String id,
                       Point position,
@@ -14,15 +14,15 @@ public abstract class AnimEntity extends ActionEntity{
         super(id, position, images, actionPeriod);
         this.animationPeriod = animationPeriod;
     }
-    public int getAnimationPeriod() {
+    protected int getAnimationPeriod() {
         return animationPeriod;
     }
 
-    public void nextImage() {
-        imageIndex = (imageIndex + 1) % images.size();
+    protected void nextImage() {
+        super.setImageIndex((super.getImageIndex() + 1) % super.getImages().size());
     }
 
-    public Action createAnimationAction(int repeatCount) {
+    protected Action createAnimationAction(int repeatCount) {
         return new Animation(this,
                 repeatCount);
     }

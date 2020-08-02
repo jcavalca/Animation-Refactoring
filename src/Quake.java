@@ -14,7 +14,7 @@ public class Quake extends AnimEntity {
         super(id, position, images, actionPeriod, animationPeriod);
     }
 
-    public void executeActivity(
+    protected void executeActivity(
             WorldModel world,
             ImageStore imageStore,
             EventScheduler scheduler)
@@ -23,14 +23,14 @@ public class Quake extends AnimEntity {
         world.removeEntity(this);
     }
 
-    public void scheduleActions(
+    protected void scheduleActions(
             EventScheduler scheduler,
             WorldModel world,
             ImageStore imageStore)
     {
         scheduler.scheduleEvent(this,
                 this.createActivityAction(world, imageStore),
-                this.actionPeriod);
+                this.getActionPeriod());
         scheduler.scheduleEvent(this, this.createAnimationAction(
                 Functions.QUAKE_ANIMATION_REPEAT_COUNT),
                 this.getAnimationPeriod());

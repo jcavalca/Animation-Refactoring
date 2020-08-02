@@ -4,7 +4,7 @@ import java.util.List;
 
 public abstract class ActionEntity extends Entity{
 
-    protected final int actionPeriod;
+    private final int actionPeriod;
 
     public ActionEntity(String id,
                         Point position,
@@ -14,17 +14,17 @@ public abstract class ActionEntity extends Entity{
         this.actionPeriod = actionPeriod;
     }
 
-    public Action createActivityAction(
+    protected Action createActivityAction(
             WorldModel world, ImageStore imageStore)
     {
         return new Activity( this, world, imageStore);
     }
 
-    public void setPosition(Point position) {
-        this.position = position;
+    protected void setPosition(Point position) {
+       super.setPosition(position);
     }
 
-    public void scheduleActions(
+    protected void scheduleActions(
             EventScheduler scheduler,
             WorldModel world,
             ImageStore imageStore)
@@ -41,5 +41,9 @@ public abstract class ActionEntity extends Entity{
                      ImageStore imageStore,
                      EventScheduler scheduler);
 
+    // Getters/ Setters
 
+    protected int getActionPeriod(){
+        return actionPeriod;
+    }
 }
