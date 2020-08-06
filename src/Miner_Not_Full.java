@@ -3,9 +3,8 @@ import java.util.Optional;
 
 import processing.core.PImage;
 
-public class Miner_Not_Full extends MoverEntity {
+public class Miner_Not_Full extends Miners{
 
-    private final int resourceLimit;
     private int resourceCount;
 
     public Miner_Not_Full(
@@ -17,23 +16,21 @@ public class Miner_Not_Full extends MoverEntity {
             int actionPeriod,
             int animationPeriod)
     {
-        super(id, position, images, actionPeriod, animationPeriod);
-        this.resourceLimit = resourceLimit;
+        super(id, position, images, actionPeriod, animationPeriod, resourceLimit);
         this.resourceCount = resourceCount;
     }
 
     protected void executeActivity(
             WorldModel world,
             ImageStore imageStore,
-            EventScheduler scheduler)
-    {
+            EventScheduler scheduler) {
         Optional<Entity> notFullTarget =
                 world.findNearest(this.getPosition(), Ore.class);
 
         if (!notFullTarget.isPresent() || !this.move(world,
                 notFullTarget.get(),
                 scheduler)
-                || !transformNotFull(world, scheduler, imageStore))
+                || !transform(world, scheduler, imageStore))
         {
             scheduler.scheduleEvent(this,
                     this.createActivityAction(world, imageStore),
@@ -41,13 +38,13 @@ public class Miner_Not_Full extends MoverEntity {
         }
     }
 
-    private boolean transformNotFull(
+    public boolean transform(
             WorldModel world,
             EventScheduler scheduler,
             ImageStore imageStore)
     {
-        if (this.resourceCount >= this.resourceLimit) {
-            Miner_Full miner = Factory.createMinerFull(this.getId(), this.resourceLimit,
+        if (this.resourceCount >= this.getResourceLimit()) {
+            Miner_Full miner = Factory.createMinerFull(this.getId(), this.getResourceLimit(),
                     this.getPosition(), this.getActionPeriod(),
                     this.getAnimationPeriod(),
                     this.getImages());
@@ -64,7 +61,7 @@ public class Miner_Not_Full extends MoverEntity {
         return false;
     }
 
-    protected boolean move(
+    public boolean move(
             WorldModel world,
             Entity target,
             EventScheduler scheduler)

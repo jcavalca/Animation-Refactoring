@@ -46,7 +46,7 @@ public abstract class MoverEntity extends AnimEntity {
     }
 
     // Abstract Methods
-    abstract boolean move(WorldModel world,
+    public abstract boolean move(WorldModel world,
                           Entity target,
                           EventScheduler scheduler);
 

@@ -41,7 +41,7 @@ public class Ore_Blob extends MoverEntity {
                 nextPeriod);
     }
 
-    protected boolean move(
+    public boolean move(
             WorldModel world,
             Entity target,
             EventScheduler scheduler) {

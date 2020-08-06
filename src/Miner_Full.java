@@ -3,8 +3,7 @@ import java.util.Optional;
 
 import processing.core.PImage;
 
-public class Miner_Full extends MoverEntity {
-    private final int resourceLimit;
+public class Miner_Full extends Miners {
 
     public Miner_Full(
             String id,
@@ -14,8 +13,7 @@ public class Miner_Full extends MoverEntity {
             int actionPeriod,
             int animationPeriod) {
 
-        super(id, position, images, actionPeriod, animationPeriod);
-        this.resourceLimit = resourceLimit;
+        super(id, position, images, actionPeriod, animationPeriod, resourceLimit);
     }
 
     protected void executeActivity(
@@ -27,7 +25,7 @@ public class Miner_Full extends MoverEntity {
 
         if (fullTarget.isPresent() && this.move(world,
                 fullTarget.get(), scheduler)) {
-            transformFull(world, scheduler, imageStore);
+            transform(world, scheduler, imageStore);
         } else {
             scheduler.scheduleEvent(this,
                     this.createActivityAction(world, imageStore),
@@ -35,11 +33,11 @@ public class Miner_Full extends MoverEntity {
         }
     }
 
-    private void transformFull(
+    protected boolean transform(
             WorldModel world,
             EventScheduler scheduler,
             ImageStore imageStore) {
-        Miner_Not_Full miner = Factory.createMinerNotFull(this.getId(), this.resourceLimit,
+        Miner_Not_Full miner = Factory.createMinerNotFull(this.getId(), this.getResourceLimit(),
                 this.getPosition(), this.getActionPeriod(),
                 this.getAnimationPeriod(),
                 this.getImages());
@@ -49,9 +47,10 @@ public class Miner_Full extends MoverEntity {
 
         world.addEntity(miner);
         miner.scheduleActions(scheduler, world, imageStore);
+        return true;
     }
 
-    protected boolean move(
+    public boolean move(
             WorldModel world,
             Entity target,
             EventScheduler scheduler) {

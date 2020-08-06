@@ -6,6 +6,6 @@ public abstract class Action {
         this.entity = entity;
     }
 
-    abstract void executeAction(EventScheduler scheduler);
+    public abstract void executeAction(EventScheduler scheduler);
 
 }

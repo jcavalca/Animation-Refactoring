@@ -37,7 +37,7 @@ public abstract class ActionEntity extends Entity{
 
     // Abstract Methods
 
-    abstract void executeActivity( WorldModel world,
+    protected abstract void executeActivity( WorldModel world,
                      ImageStore imageStore,
                      EventScheduler scheduler);
 
