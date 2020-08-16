@@ -3,7 +3,7 @@ import processing.core.PImage;
 import java.util.List;
 import java.util.Optional;
 
-public class Dragon extends MoverEntity {
+public class Dragon extends MoverEntity implements clickEntity {
 
     public static int dragonLimit = 10;
     public static int dragonCount;

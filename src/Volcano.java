@@ -1,10 +1,9 @@
 import processing.core.PImage;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 
-public class Volcano extends AnimEntity {
+public class Volcano extends AnimEntity implements clickEntity {
 
     private int dragonCount;
 
@@ -26,7 +25,7 @@ public class Volcano extends AnimEntity {
     {
         Random rand = new Random();
         int randNumber = rand.nextInt(100);
-        if (randNumber > 95 && Dragon.dragonCount < Dragon.dragonLimit){
+        if (randNumber > 97 && Dragon.dragonCount < Dragon.dragonLimit){
             Point location = this.getPosition();
             Dragon dragon = Factory.createDragon("dragon", location,
                     Functions.DRAGON_ACTION_PERIOD,

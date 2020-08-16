@@ -168,10 +168,7 @@ public final class VirtualWorld extends PApplet
     }
 
     // Project 4
-
-
-
-    public void mousePressed(){
+    public void pressedOnBcknd(){
         Point pressed = mouseToPoint(mouseX, mouseY);
         int x = pressed.x;
         int y = pressed.y;
@@ -192,6 +189,34 @@ public final class VirtualWorld extends PApplet
         }
         Volcano volcano = Factory.createVolcano(new Point(pressed.x + 2, pressed.y + 2), imageStore.getImageList(Functions.VOLCANO_KEY));
         volcano.addToWorld(world, imageStore, scheduler);
+
+
+    }
+
+
+    public void mousePressed(){
+        pressedOnBcknd();
+        //Optional<Entity> occupant = world.getOccupant(new Point(mouseX / TILE_HEIGHT, mouseY / TILE_HEIGHT));
+//        Point pressed = mouseToPoint(mouseX, mouseY);
+//        int x = pressed.x;
+//        int y = pressed.y;
+//        // Change background
+//        for (int i = 0; i < 8; i++) {
+//            Point pressedOffset;
+//            if (i == 5) {
+//                x = pressed.x + 1;
+//                y++;
+//            }
+//            if ( i < 5) {
+//                pressedOffset = new Point(++x -1, y);
+//            }else{
+//                pressedOffset = new Point(++x -1, y);
+//            }
+//            Volcano volcano = Factory.createVolcano(pressedOffset, imageStore.getImageList(Functions.VOLCANO_KEY));
+//            volcano.addToWorld(world, imageStore, scheduler);
+//        }
+//        Volcano volcano = Factory.createVolcano(new Point(pressed.x + 2, pressed.y + 2), imageStore.getImageList(Functions.VOLCANO_KEY));
+//        volcano.addToWorld(world, imageStore, scheduler);
 
     }
 
