@@ -74,4 +74,30 @@ public class Factory {
         return new Vein(id, position, images,
                 actionPeriod);
     }
+
+    public static Volcano createVolcano(
+            Point position, List<PImage> images)
+    {
+        return new Volcano(Functions.VOLCANO_ID, position, images,
+                Functions.VOLCANO_ACTION_PERIOD, Functions.VOLCANO_ANIMATION_PERIOD);
+    }
+
+    public static Dragon createDragon(
+            String id,
+            Point position,
+            int actionPeriod,
+            int animationPeriod,
+            List<PImage> images)
+    {
+        return new Dragon( id, position, images,
+                actionPeriod, animationPeriod);
+    }
+
+    public static Fire createFire(
+            Point position, List<PImage> images)
+    {
+        return new Fire(Functions.FIRE_ID, position, images,
+                Functions.FIRE_ACTION_PERIOD, Functions.FIRE_ANIMATION_PERIOD);
+    }
+
 }

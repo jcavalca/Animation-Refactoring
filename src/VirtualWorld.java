@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Optional;
 import java.util.Scanner;
 
 import processing.core.*;
@@ -75,6 +76,7 @@ public final class VirtualWorld extends PApplet
         }
 
         view.drawViewport();
+
     }
 
     public void keyPressed() {
@@ -165,8 +167,42 @@ public final class VirtualWorld extends PApplet
         }
     }
 
+    // Project 4
+
+
+
+    public void mousePressed(){
+        Point pressed = mouseToPoint(mouseX, mouseY);
+        int x = pressed.x;
+        int y = pressed.y;
+        // Change background
+        for (int i = 0; i < 8; i++) {
+            Point pressedOffset;
+            if (i == 5) {
+                x = pressed.x + 1;
+                y++;
+            }
+            if ( i < 5) {
+                pressedOffset = new Point(++x -1, y);
+            }else{
+                pressedOffset = new Point(++x -1, y);
+            }
+            Volcano volcano = Factory.createVolcano(pressedOffset, imageStore.getImageList(Functions.VOLCANO_KEY));
+            volcano.addToWorld(world, imageStore, scheduler);
+        }
+        Volcano volcano = Factory.createVolcano(new Point(pressed.x + 2, pressed.y + 2), imageStore.getImageList(Functions.VOLCANO_KEY));
+        volcano.addToWorld(world, imageStore, scheduler);
+
+    }
+
+    private Point mouseToPoint(int x, int y){
+        return new Point(x /TILE_HEIGHT, y /TILE_HEIGHT);
+    }
+
+
     public static void main(String[] args) {
         parseCommandLine(args);
         PApplet.main(VirtualWorld.class);
     }
+
 }

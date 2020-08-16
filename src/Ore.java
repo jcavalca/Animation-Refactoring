@@ -23,7 +23,6 @@ public class Ore extends ActionEntity{
 
         world.removeEntity(this);
         scheduler.unscheduleAllEvents(this);
-
         Ore_Blob blob = Factory.createOreBlob(this.getId() + Functions.BLOB_ID_SUFFIX, pos,
                 this.getActionPeriod() / Functions.BLOB_PERIOD_SCALE,
                 Functions.BLOB_ANIMATION_MIN + Functions.rand.nextInt(

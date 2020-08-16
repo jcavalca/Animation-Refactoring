@@ -28,6 +28,18 @@ public final class Functions {
     public static final int QUAKE_ANIMATION_PERIOD = 100;
     public static final int QUAKE_ANIMATION_REPEAT_COUNT = 10;
 
+    public static final String VOLCANO_KEY = "volcano";
+    public static final String VOLCANO_ID = "volcano";
+    public static final int VOLCANO_ACTION_PERIOD = 4;
+    public static final int VOLCANO_ANIMATION_PERIOD = 50;
+    public static final int VOLCANO_ANIMATION_REPEAT_COUNT = 150;
+
+    public static final String FIRE_KEY = "fire";
+    public static final String FIRE_ID = "fire";
+    public static final int FIRE_ACTION_PERIOD = 4;
+    public static final int FIRE_ANIMATION_PERIOD = 50;
+    public static final int FIRE_ANIMATION_REPEAT_COUNT = 150;
+
     public static final int COLOR_MASK = 0xffffff;
     public static final int KEYED_IMAGE_MIN = 5;
     private static final int KEYED_RED_IDX = 2;
@@ -74,6 +86,18 @@ public final class Functions {
     public static final int VEIN_COL = 2;
     public static final int VEIN_ROW = 3;
     public static final int VEIN_ACTION_PERIOD = 4;
+
+    public static final String DRAGON_KEY = "dragon";
+    public static final int DRAGON_NUM_PROPERTIES = 7;
+    public static final int DRAGON_ID = 1;
+    public static final int DRAGON_COL = 2;
+    public static final int DRAGON_ROW = 3;
+    public static final int DRAGON_LIMIT = 4;
+    public static final int DRAGON_ACTION_PERIOD = 1100;
+    public static final int DRAGON_ANIMATION_PERIOD = 100;
+    public static final int DRAGON_ANIMATION_REPEAT_COUNT = 10;
+
+
 
     public static void loadImages( // leave for later
                                    Scanner in, ImageStore imageStore, PApplet screen) {
@@ -193,7 +217,7 @@ public final class Functions {
                             properties[MINER_ACTION_PERIOD]), Integer.parseInt(
                             properties[MINER_ANIMATION_PERIOD]),
                     imageStore.getImageList(
-                            MINER_KEY));
+                             MINER_KEY));
             world.tryAddEntity(entity);
         }
 
@@ -270,5 +294,7 @@ public final class Functions {
 
         return properties.length ==  VEIN_NUM_PROPERTIES;
     }
+
+
 
 }

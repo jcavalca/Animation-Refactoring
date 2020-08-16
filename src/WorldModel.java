@@ -83,7 +83,7 @@ public final class WorldModel
             this.setOccupancyCell(oldPos, null);
             this.removeEntityAt(pos);
             this.setOccupancyCell(pos, entity);
-            ((ActionEntity)entity).setPosition(pos);
+            (entity).setPosition(pos);
         }
     }
 
@@ -97,7 +97,7 @@ public final class WorldModel
 
             /* This moves the entity just outside of the grid for
              * debugging purposes. */
-            ((ActionEntity)entity).setPosition(new Point(-1, -1));
+            (entity).setPosition(new Point(-1, -1));
             this.entities.remove(entity);
             this.setOccupancyCell(pos, null);
         }

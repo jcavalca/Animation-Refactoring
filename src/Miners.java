@@ -23,6 +23,18 @@ public abstract class Miners extends MoverEntity{
             ImageStore imageStore
     );
 
+    public void burn(WorldModel world,
+                     ImageStore imageStore,
+                     EventScheduler scheduler){
+        Point tgtPos = getPosition();
+        world.removeEntity(this);
+        scheduler.unscheduleAllEvents(this);
+        Fire fire = Factory.createFire(tgtPos,
+                imageStore.getImageList(Functions.FIRE_KEY));
+        fire.addToWorld(world, imageStore, scheduler);
+
+    };
+
     // Getter
     protected int getResourceLimit(){
         return resourceLimit;

@@ -39,14 +39,6 @@ public final class Point
         return deltaX * deltaX + deltaY * deltaY;
     }
 
-//    public int getX() {
-//        return X;
-//    }
-//
-//    public int getY() {
-//        return Y;
-//    }
-
     public Optional<Entity> nearestEntity( //// Gotta solve
                                                   List<Entity> entities) {
         if (entities.isEmpty()) {
