@@ -34,7 +34,7 @@ public final class VirtualWorld extends PApplet
     public static final double FASTER_SCALE = 0.25;
     public static final double FASTEST_SCALE = 0.10;
 
-    public static double timeScale = 1.0;
+    public static double timeScale = 1.0 / 2;
 
     private ImageStore imageStore;
     private WorldModel world;
@@ -42,6 +42,13 @@ public final class VirtualWorld extends PApplet
     private EventScheduler scheduler;
 
     private long nextTime;
+
+    private int left = 0;
+    private int right = 0;
+    private int up = 0;
+    private int down = 0;
+
+    private int clicks;
 
     public void settings() {
         size(VIEW_WIDTH, VIEW_HEIGHT);
@@ -87,15 +94,19 @@ public final class VirtualWorld extends PApplet
             switch (keyCode) {
                 case UP:
                     dy = -1;
+                    up++;
                     break;
                 case DOWN:
                     dy = 1;
+                    down++;
                     break;
                 case LEFT:
                     dx = -1;
+                    left++;
                     break;
                 case RIGHT:
                     dx = 1;
+                    right++;
                     break;
             }
             view.shiftView(dx, dy);
@@ -168,15 +179,17 @@ public final class VirtualWorld extends PApplet
     }
 
     // Project 4
-    public void pressedOnBcknd(){
+    public void pressedFire(){
+        int horDisp = left + right;
+        int verDisp = up + down;
         Point pressed = mouseToPoint(mouseX, mouseY);
-        int x = pressed.x;
-        int y = pressed.y;
+        int x = pressed.x + horDisp;
+        int y = pressed.y + verDisp;
         // Change background
         for (int i = 0; i < 8; i++) {
             Point pressedOffset;
             if (i == 5) {
-                x = pressed.x + 1;
+                x = pressed.x + 1 + horDisp;
                 y++;
             }
             if ( i < 5) {
@@ -187,38 +200,41 @@ public final class VirtualWorld extends PApplet
             Volcano volcano = Factory.createVolcano(pressedOffset, imageStore.getImageList(Functions.VOLCANO_KEY));
             volcano.addToWorld(world, imageStore, scheduler);
         }
-        Volcano volcano = Factory.createVolcano(new Point(pressed.x + 2, pressed.y + 2), imageStore.getImageList(Functions.VOLCANO_KEY));
+        Volcano volcano = Factory.createVolcano(new Point(pressed.x + 2 + horDisp, pressed.y + 2 + verDisp),
+                imageStore.getImageList(Functions.VOLCANO_KEY));
         volcano.addToWorld(world, imageStore, scheduler);
+        clicks++;
+    }
 
-
+    public void pressedIce(){
+        int horDisp = left + right;
+        int verDisp = up + down;
+        Point pressed = mouseToPoint(mouseX, mouseY);
+        int x = pressed.x + horDisp;
+        int y = pressed.y + verDisp;
+        // Change background
+        for (int i = 0; i < 5; i++) {
+            Point pressedOffset;
+            if (i == 5) {
+                x = pressed.x + 1;
+                y++;
+            }
+            pressedOffset = new Point(++x -1, y);
+            Ice ice = Factory.createIce(pressedOffset, imageStore.getImageList(Functions.ICE_KEY));
+            ice.addToWorld(world, imageStore, scheduler);
+        }
+        clicks++;
     }
 
 
     public void mousePressed(){
-        pressedOnBcknd();
-        //Optional<Entity> occupant = world.getOccupant(new Point(mouseX / TILE_HEIGHT, mouseY / TILE_HEIGHT));
-//        Point pressed = mouseToPoint(mouseX, mouseY);
-//        int x = pressed.x;
-//        int y = pressed.y;
-//        // Change background
-//        for (int i = 0; i < 8; i++) {
-//            Point pressedOffset;
-//            if (i == 5) {
-//                x = pressed.x + 1;
-//                y++;
-//            }
-//            if ( i < 5) {
-//                pressedOffset = new Point(++x -1, y);
-//            }else{
-//                pressedOffset = new Point(++x -1, y);
-//            }
-//            Volcano volcano = Factory.createVolcano(pressedOffset, imageStore.getImageList(Functions.VOLCANO_KEY));
-//            volcano.addToWorld(world, imageStore, scheduler);
-//        }
-//        Volcano volcano = Factory.createVolcano(new Point(pressed.x + 2, pressed.y + 2), imageStore.getImageList(Functions.VOLCANO_KEY));
-//        volcano.addToWorld(world, imageStore, scheduler);
+        if (clicks == 0)
+            pressedFire();
+        else if (clicks == 1)
+                pressedIce();
 
     }
+
 
     private Point mouseToPoint(int x, int y){
         return new Point(x /TILE_HEIGHT, y /TILE_HEIGHT);

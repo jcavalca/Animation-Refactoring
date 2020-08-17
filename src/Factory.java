@@ -100,4 +100,22 @@ public class Factory {
                 Functions.FIRE_ACTION_PERIOD, Functions.FIRE_ANIMATION_PERIOD);
     }
 
+    public static Ice createIce(
+            Point position, List<PImage> images)
+    {
+        return new Ice(Functions.ICE_ID, position, images,
+                Functions.ICE_ACTION_PERIOD, Functions.ICE_ANIMATION_PERIOD);
+    }
+
+    public static DragonIce createDragonIce(
+            String id,
+            Point position,
+            int actionPeriod,
+            int animationPeriod,
+            List<PImage> images)
+    {
+        return new DragonIce( id, position, images,
+                actionPeriod, animationPeriod);
+    }
+
 }

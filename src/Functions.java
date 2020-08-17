@@ -34,6 +34,12 @@ public final class Functions {
     public static final int VOLCANO_ANIMATION_PERIOD = 50;
     public static final int VOLCANO_ANIMATION_REPEAT_COUNT = 150;
 
+    public static final String ICE_KEY = "ice";
+    public static final String ICE_ID = "ice";
+    public static final int ICE_ACTION_PERIOD = 4;
+    public static final int ICE_ANIMATION_PERIOD = 50;
+    public static final int ICE_ANIMATION_REPEAT_COUNT = 150;
+
     public static final String FIRE_KEY = "fire";
     public static final String FIRE_ID = "fire";
     public static final int FIRE_ACTION_PERIOD = 4;
@@ -88,15 +94,12 @@ public final class Functions {
     public static final int VEIN_ACTION_PERIOD = 4;
 
     public static final String DRAGON_KEY = "dragon";
-    public static final int DRAGON_NUM_PROPERTIES = 7;
-    public static final int DRAGON_ID = 1;
-    public static final int DRAGON_COL = 2;
-    public static final int DRAGON_ROW = 3;
-    public static final int DRAGON_LIMIT = 4;
     public static final int DRAGON_ACTION_PERIOD = 1100;
     public static final int DRAGON_ANIMATION_PERIOD = 100;
-    public static final int DRAGON_ANIMATION_REPEAT_COUNT = 10;
 
+    public static final String DRAGON_ICE_KEY = "dragonIce";
+    public static final int DRAGON_ICE_ACTION_PERIOD = 1100;
+    public static final int DRAGON_ICE_ANIMATION_PERIOD = 100;
 
 
     public static void loadImages( // leave for later

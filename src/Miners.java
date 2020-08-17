@@ -33,7 +33,7 @@ public abstract class Miners extends MoverEntity{
                 imageStore.getImageList(Functions.FIRE_KEY));
         fire.addToWorld(world, imageStore, scheduler);
 
-    };
+    }
 
     // Getter
     protected int getResourceLimit(){

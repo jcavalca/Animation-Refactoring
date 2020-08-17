@@ -3,12 +3,12 @@ import processing.core.PImage;
 import java.util.List;
 import java.util.Optional;
 
-public class Dragon extends MoverEntity implements clickEntity {
+public class DragonIce extends MoverEntity implements clickEntity {
 
-    public static int dragonLimit = 10;
+    public static int dragonLimit = 3;
     public static int dragonCount;
 
-    public Dragon(
+    public DragonIce(
             String id,
             Point position,
             List<PImage> images,
@@ -22,15 +22,15 @@ public class Dragon extends MoverEntity implements clickEntity {
             WorldModel world,
             ImageStore imageStore,
             EventScheduler scheduler) {
-        Optional<Entity> dragonTarget =
-                world.findNearest(this.getPosition(), Miners.class);
+        Optional<Entity> dragonIceTarget =
+                world.findNearest(this.getPosition(), Dragon.class);
         long nextPeriod = this.getActionPeriod();
 
-        if (dragonTarget.isPresent()) {
-            Point tgtPos = dragonTarget.get().getPosition();
+        if (dragonIceTarget.isPresent()) {
+            Point tgtPos = dragonIceTarget.get().getPosition();
 
-            if (this.move(world, dragonTarget.get(), scheduler)) {
-                ((Miners)dragonTarget.get()).burn(world, imageStore, scheduler);
+            if (this.move(world, dragonIceTarget.get(), scheduler)) {
+                ((Dragon)dragonIceTarget.get()).freeze(world, imageStore, scheduler);
                 nextPeriod += this.getActionPeriod();
             }
         }
@@ -68,13 +68,6 @@ public class Dragon extends MoverEntity implements clickEntity {
                            EventScheduler scheduler){
         world.addEntity(this);
         this.scheduleActions(scheduler, world, imageStore);
-    }
-
-    public void freeze(WorldModel world,
-                       ImageStore imageStore,
-                       EventScheduler scheduler) {
-        Point tgtPos = getPosition();
-        world.removeEntity(this);
     }
 
 }
