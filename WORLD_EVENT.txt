@@ -1,0 +1,9 @@
+1) There are two event, both triggered by a mouse press: 
+						a) Volcano chain (first mouse press)
+						b) Ice chain (second mouse press)
+
+2) When the first event is triggered, a volcano chain appears near the location of the mouse press. Conversely, the second produces an ice chain.
+
+3) As time goes on, the volcano chain creates fire dragons and the ice chain createds ice dragons.
+
+4) The fire dragons chase miners and burn them, replacing the burnt miners with a little fire image. The ice dragons, only triggered by a second mouse press, will hunt fire dragons and remove such entities from the animation. 
