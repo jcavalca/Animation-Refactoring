@@ -2,7 +2,7 @@ import processing.core.PImage;
 
 import java.util.List;
 
-public class Fire extends AnimEntity implements clickEntity {
+public class Fire extends AnimEntity implements ClickEntity {
 
     public Fire(
             String id,

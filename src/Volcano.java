@@ -3,9 +3,7 @@ import processing.core.PImage;
 import java.util.List;
 import java.util.Random;
 
-public class Volcano extends AnimEntity implements clickEntity {
-
-    private int dragonCount;
+public class Volcano extends AnimEntity implements ClickEntity {
 
     public Volcano(
             String id,

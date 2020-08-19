@@ -3,7 +3,7 @@ import processing.core.PImage;
 import java.util.List;
 import java.util.Random;
 
-public class Ice extends AnimEntity implements clickEntity {
+public class Ice extends AnimEntity implements ClickEntity {
 
     public Ice(
             String id,

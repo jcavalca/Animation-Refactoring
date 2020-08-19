@@ -1,6 +1,6 @@
-public interface  clickEntity {
+public interface ClickEntity {
 
-     public void addToWorld(WorldModel world,
+     void addToWorld(WorldModel world,
                            ImageStore imageStore,
                            EventScheduler scheduler);
 
